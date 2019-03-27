@@ -193,7 +193,7 @@
          }
       </style>
       <script type='text/javascript'><xsl:text disable-output-escaping='yes'><![CDATA[
-         var menus            = new Array('summary','info', listByCategories','listByPackages');
+         var menus            = new Array('summary','info', 'listByCategories','listByPackages');
          var selectedMenuId   = "summary";
          var selectedVersion  = -1;
          var selectedPriority = 4;
@@ -883,11 +883,11 @@
       <div id='menuWrapper' style=''>
          <div id="navcontainer">
             <ul id="navlist">
+               <li><a id='summary'           class="current" href="#" onclick="selectMenu('summary'); return false;"         >Summary</a></li>
                <li><a id='listByCategories'  class="none"    href="#" onclick="selectMenu('listByCategories'); return false;">Browse By Categories</a></li>
                <li style="display: none;">
-                   <a id='history'           class="none"    href="#">History</a></li>
+                  <a id='history'           class="none"    href="#">History</a></li>
                <li><a id='listByPackages'    class="none"    href="#" onclick="selectMenu('listByPackages'); return false;"  >Browse by Packages</a></li>
-               <li><a id='summary'           class="current" href="#" onclick="selectMenu('summary'); return false;"         >Summary</a></li>
                <li><a id='info'              class="none"    href="#" onclick="selectMenu('info'); return false;"            >Info</a></li>
             </ul>
          </div>

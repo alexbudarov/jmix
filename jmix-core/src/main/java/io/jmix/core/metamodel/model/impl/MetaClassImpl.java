@@ -84,8 +84,9 @@ public class MetaClassImpl extends MetadataObjectImpl implements MetaClass {
 		return session;
 	}
 
+    @SuppressWarnings("unchecked")
     @Override
-    public Class getJavaClass() {
+    public <T> Class<T> getJavaClass() {
         return javaClass;
     }
 

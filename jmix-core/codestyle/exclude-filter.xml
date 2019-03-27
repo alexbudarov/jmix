@@ -67,4 +67,25 @@
         <Method name="_persistence_set"/>
     </Match>
 
+    <Match>
+        <Bug pattern="NP_BOOLEAN_RETURN_NULL"/>
+        <Class name="io.jmix.core.metamodel.datatypes.impl.BooleanDatatype"/>
+        <Method name="parse"/>
+    </Match>
+
+    <Match>
+        <Class name="io.jmix.core.config.ConfigGetter"/>
+        <Bug pattern="ES_COMPARING_PARAMETER_STRING_WITH_EQ"/>
+    </Match>
+
+    <Match>
+        <Bug pattern="DM_STRING_VOID_CTOR"/>
+        <Class name="io.jmix.core.config.ConfigUtil"/>
+    </Match>
+
+    <Match>
+        <Bug pattern="SF_SWITCH_FALLTHROUGH"/>
+        <Class name="io.jmix.core.UuidProvider"/>
+    </Match>
+
 </FindBugsFilter>

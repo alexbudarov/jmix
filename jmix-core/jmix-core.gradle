@@ -79,3 +79,18 @@ if (project.hasProperty('spotbugsEnabled')) {
         }
     }
 }
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+    options.deprecation = false
+    options.compilerArgs += ["-Xlint:unchecked", "-Xlint:-deprecation", "-Werror"]
+}
+
+javadoc {
+    options.addStringOption("sourcepath", "")
+    options.encoding = 'UTF-8'
+    options.memberLevel = org.gradle.external.javadoc.JavadocMemberLevel.PROTECTED
+    destinationDir = file("$buildDir/docs/javadoc")
+
+    title = "${project.name.toUpperCase()} ${project.version.replace('-SNAPSHOT','')} API"
+}
