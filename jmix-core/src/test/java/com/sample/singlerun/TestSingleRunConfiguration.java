@@ -14,13 +14,16 @@
  * limitations under the License.
  */
 
-package io.jmix.core.impl;
+package com.sample.singlerun;
 
-import io.jmix.core.SecurityContext;
+import io.jmix.core.JmixCoreConfiguration;
+import io.jmix.core.annotation.JmixComponent;
+import io.jmix.core.annotation.JmixProperty;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 
-public interface SecurityContextHolder {
-
-    SecurityContext get();
-
-    void set(SecurityContext securityContext);
+@Configuration
+@ComponentScan
+@JmixComponent(dependsOn = JmixCoreConfiguration.class)
+public class TestSingleRunConfiguration {
 }

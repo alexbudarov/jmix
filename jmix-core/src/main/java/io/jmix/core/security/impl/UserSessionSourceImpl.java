@@ -14,56 +14,35 @@
  * limitations under the License.
  */
 
-package io.jmix.core;
+package io.jmix.core.security.impl;
 
-import io.jmix.core.entity.User;
+import io.jmix.core.security.UserSession;
+import io.jmix.core.security.UserSessionSource;
+import org.springframework.stereotype.Component;
 
-import java.io.Serializable;
-import java.util.LinkedHashMap;
-import java.util.TimeZone;
+import java.util.Locale;
 import java.util.UUID;
 
-public class UserSession {
-
-    private User user;
-
-    public UserSession(User user) {
-        this.user = user;
-    }
-
-    public UUID getId() {
-        return null;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public TimeZone getTimeZone() {
-        return null;
-    }
-
-    public boolean isSystem() {
+// todo impl
+@Component
+public class UserSessionSourceImpl implements UserSessionSource {
+    @Override
+    public boolean checkCurrentUserSession() {
         return false;
     }
 
-    public String getAddress() {
+    @Override
+    public UserSession getUserSession() {
         return null;
     }
 
-    public String getClientInfo() {
+    @Override
+    public UUID currentOrSubstitutedUserId() {
         return null;
     }
 
-    public <T> T getAttribute(String attributeName) {
+    @Override
+    public Locale getLocale() {
         return null;
-    }
-
-    public void setAttribute(String name, Serializable value) {
-
-    }
-
-    public boolean hasConstraints() {
-        return false;
     }
 }

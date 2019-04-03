@@ -13,10 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.jmix.core.usersessions;
-
-import io.jmix.core.UserSession;
-import io.jmix.core.UserSessionFinder;
+package io.jmix.core.security;
 
 import javax.annotation.Nullable;
 import java.util.Collection;
@@ -27,7 +24,7 @@ import java.util.stream.Stream;
 /**
  * User sessions distributed cache.
  */
-public interface UserSessions extends UserSessionFinder {
+public interface UserSessions {
 
     String NAME = "cuba_UserSessions";
     

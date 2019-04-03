@@ -13,36 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.jmix.core.security;
 
-package io.jmix.core.impl;
+import io.jmix.core.Logging;
+import io.jmix.core.compatibility.SupportedByClient;
 
-import io.jmix.core.UserSession;
-import io.jmix.core.UserSessionSource;
-import org.springframework.stereotype.Component;
-
-import java.util.Locale;
 import java.util.UUID;
 
-// todo impl
-@Component
-public class UserSessionSourceImpl implements UserSessionSource {
-    @Override
-    public boolean checkCurrentUserSession() {
-        return false;
-    }
+/**
+ * Raised by middleware if the client provides an invalid user session ID (e.g. if the user session has expired).
+ *
+ */
+@SupportedByClient
+@Logging(Logging.Type.BRIEF)
+public class NoUserSessionException extends RuntimeException {
 
-    @Override
-    public UserSession getUserSession() {
-        return null;
-    }
+    private static final long serialVersionUID = 4820628023682230319L;
 
-    @Override
-    public UUID currentOrSubstitutedUserId() {
-        return null;
-    }
-
-    @Override
-    public Locale getLocale() {
-        return null;
+    public NoUserSessionException(UUID sessionId) {
+        super(String.format("User session not found: %s", sessionId.toString()));
     }
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.jmix.core.usersessions;
+package io.jmix.core.security;
 
 import io.jmix.core.entity.BaseUuidEntity;
 import io.jmix.core.entity.annotation.SystemLevel;

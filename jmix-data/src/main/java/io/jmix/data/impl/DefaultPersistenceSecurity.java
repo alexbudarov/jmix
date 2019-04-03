@@ -16,7 +16,7 @@
 
 package io.jmix.data.impl;
 
-import io.jmix.core.ConditionalOnSecurityImplementation;
+import io.jmix.core.security.ConditionalOnSecurityImplementation;
 import io.jmix.core.View;
 import io.jmix.core.entity.Entity;
 import io.jmix.data.PersistenceSecurity;

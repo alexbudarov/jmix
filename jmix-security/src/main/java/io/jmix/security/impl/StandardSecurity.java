@@ -16,10 +16,10 @@
 
 package io.jmix.security.impl;
 
-import io.jmix.core.ConstraintOperationType;
-import io.jmix.core.EntityAttrAccess;
-import io.jmix.core.EntityOp;
-import io.jmix.core.Security;
+import io.jmix.core.security.ConstraintOperationType;
+import io.jmix.core.security.EntityAttrAccess;
+import io.jmix.core.security.EntityOp;
+import io.jmix.core.security.Security;
 import io.jmix.core.entity.Entity;
 import io.jmix.core.metamodel.model.MetaClass;
 import io.jmix.core.metamodel.model.MetaPropertyPath;

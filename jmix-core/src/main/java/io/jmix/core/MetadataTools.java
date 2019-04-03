@@ -26,6 +26,7 @@ import io.jmix.core.entity.Entity;
 import io.jmix.core.entity.*;
 import io.jmix.core.entity.annotation.IgnoreUserTimeZone;
 import io.jmix.core.entity.annotation.SystemLevel;
+import io.jmix.core.security.UserSessionSource;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.stereotype.Component;

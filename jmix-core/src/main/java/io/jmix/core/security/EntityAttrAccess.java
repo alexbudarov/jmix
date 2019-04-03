@@ -13,10 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.jmix.core.security;
 
-package io.jmix.core.impl;
+/**
+ * Type of access to an entity attribute.
+ */
+public enum EntityAttrAccess {
+    DENY(0),
+    VIEW(1),
+    MODIFY(2);
 
-import io.jmix.core.SecurityContext;
+    private int id;
 
-public class ThreadLocalSecurityContextHolder extends ThreadLocal<SecurityContext> implements SecurityContextHolder {
+    EntityAttrAccess(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public static EntityAttrAccess fromId(int id) {
+        switch (id) {
+            case 0: return DENY;
+            case 1: return VIEW;
+            case 2: return MODIFY;
+            default: return null;
+        }
+    }
 }

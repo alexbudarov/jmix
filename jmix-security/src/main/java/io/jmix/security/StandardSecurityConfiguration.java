@@ -16,7 +16,7 @@
 
 package io.jmix.security;
 
-import io.jmix.core.ConditionalOnSecurityImplementation;
+import io.jmix.core.security.ConditionalOnSecurityImplementation;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 

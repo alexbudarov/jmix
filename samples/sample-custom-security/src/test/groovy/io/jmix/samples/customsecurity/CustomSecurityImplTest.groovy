@@ -16,7 +16,7 @@
 
 package io.jmix.samples.customsecurity
 
-import io.jmix.core.Security
+import io.jmix.core.security.Security
 import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Specification
 

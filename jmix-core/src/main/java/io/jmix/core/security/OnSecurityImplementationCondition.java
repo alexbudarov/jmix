@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package io.jmix.core;
+package io.jmix.core.security;
 
+import io.jmix.core.security.ConditionalOnSecurityImplementation;
 import org.springframework.context.annotation.Condition;
 import org.springframework.context.annotation.ConditionContext;
 import org.springframework.core.type.AnnotatedTypeMetadata;

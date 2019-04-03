@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-package io.jmix.core;
+package io.jmix.core.security;
+
+import io.jmix.core.security.UserSession;
 
 import java.util.Locale;
 import java.util.UUID;

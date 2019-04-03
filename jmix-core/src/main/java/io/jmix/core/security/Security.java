@@ -14,11 +14,15 @@
  * limitations under the License.
  */
 
-package io.jmix.core;
+package io.jmix.core.security;
 
 import io.jmix.core.entity.Entity;
 import io.jmix.core.metamodel.model.MetaClass;
 import io.jmix.core.metamodel.model.MetaPropertyPath;
+import io.jmix.core.security.AccessDeniedException;
+import io.jmix.core.security.ConstraintOperationType;
+import io.jmix.core.security.EntityAttrAccess;
+import io.jmix.core.security.EntityOp;
 
 /**
  * Infrastructure interface providing methods to check permissions of the current user.

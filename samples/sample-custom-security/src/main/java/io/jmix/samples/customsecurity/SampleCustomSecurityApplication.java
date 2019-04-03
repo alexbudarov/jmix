@@ -1,6 +1,6 @@
 package io.jmix.samples.customsecurity;
 
-import io.jmix.core.Security;
+import io.jmix.core.security.Security;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.jmix.core;
+package io.jmix.core.security;
 
 import io.jmix.core.commons.util.Preconditions;
 
@@ -60,7 +60,7 @@ public class SecurityContext {
     /**
      * @return current user session. Can be null, so don't rely on this method in application code - use
      */
-    @Nullable
+//    @Nullable
     public UserSession getSession() {
         return session;
     }

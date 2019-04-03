@@ -13,24 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.jmix.core.usersessions;
+package io.jmix.core.security;
 
 import io.jmix.core.Logging;
 import io.jmix.core.compatibility.SupportedByClient;
 
-import java.util.UUID;
-
 /**
- * Raised by middleware if the client provides an invalid user session ID (e.g. if the user session has expired).
- *
+ * Login error. Contains message localized accordingly to the current user locale. 
  */
 @SupportedByClient
 @Logging(Logging.Type.BRIEF)
-public class NoUserSessionException extends RuntimeException {
+public class LoginException extends RuntimeException {
 
-    private static final long serialVersionUID = 4820628023682230319L;
+    private static final long serialVersionUID = 6144194102176774627L;
 
-    public NoUserSessionException(UUID sessionId) {
-        super(String.format("User session not found: %s", sessionId.toString()));
+    public LoginException(String message) {
+        super(message);
+    }
+
+    protected LoginException(Throwable t) {
+        super(t);
+    }
+
+    protected LoginException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public LoginException(String template, Object... params) {
+        super(String.format(template, params));
     }
 }

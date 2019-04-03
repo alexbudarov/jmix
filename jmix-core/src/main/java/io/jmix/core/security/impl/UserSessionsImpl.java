@@ -13,15 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.jmix.core.usersessions;
+package io.jmix.core.security.impl;
 
 import io.jmix.core.*;
 import io.jmix.core.cluster.ClusterListener;
 import io.jmix.core.cluster.ClusterManager;
 import io.jmix.core.commons.util.Preconditions;
 import io.jmix.core.compatibility.AppContext;
-import io.jmix.core.entity.BaseUuidEntity;
-import io.jmix.core.entity.User;
+import io.jmix.core.security.NoUserSessionException;
+import io.jmix.core.security.UserSession;
+import io.jmix.core.security.UserSessionEntity;
+import io.jmix.core.security.UserSessions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -104,39 +106,39 @@ public class UserSessionsImpl implements UserSessions {
 //    @Inject
 //    protected UserSessionLog userSessionLog;
 
-    private static class ServerUser extends BaseUuidEntity implements User {
+//    private static class ServerUser extends BaseUuidEntity implements User {
+//
+//        private String login = "server";
+//
+//        @Override
+//        public String getLogin() {
+//            return login;
+//        }
+//
+//        @Override
+//        public void setLogin(String server) {
+//        }
+//
+//        @Override
+//        public String getLoginLowerCase() {
+//            return login;
+//        }
+//
+//        @Override
+//        public String getName() {
+//            return null;
+//        }
+//    }
 
-        private String login = "server";
-
-        @Override
-        public String getLogin() {
-            return login;
-        }
-
-        @Override
-        public void setLogin(String server) {
-        }
-
-        @Override
-        public String getLoginLowerCase() {
-            return login;
-        }
-
-        @Override
-        public String getName() {
-            return null;
-        }
-    }
-
-    public UserSessionsImpl() {
-        User serverUser = new ServerUser();
-        NO_USER_SESSION = new UserSession(serverUser) {
-            @Override
-            public UUID getId() {
-                return AppContext.NO_USER_CONTEXT.getSessionId();
-            }
-        };
-    }
+//    public UserSessionsImpl() {
+//        User serverUser = new ServerUser();
+//        NO_USER_SESSION = new UserSession(serverUser) {
+//            @Override
+//            public UUID getId() {
+//                return AppContext.NO_USER_CONTEXT.getSessionId();
+//            }
+//        };
+//    }
 
     @Inject
     public void setConfiguration(ConfigInterfaces configuration) {

@@ -16,10 +16,10 @@
 
 package io.jmix.core.impl.logging;
 
-import io.jmix.core.SecurityContext;
-import io.jmix.core.UserSession;
 import io.jmix.core.compatibility.AppContext;
-import io.jmix.core.impl.UserSessionFinder;
+import io.jmix.core.security.SecurityContext;
+import io.jmix.core.security.UserSession;
+import io.jmix.core.security.UserSessions;
 import org.slf4j.MDC;
 import org.springframework.context.ApplicationContext;
 
@@ -40,7 +40,7 @@ public class LogMdc {
                     else if (securityContext.getSessionId() != null) {
                         ApplicationContext applicationContext = AppContext.getApplicationContext();
                         if (applicationContext.containsBean("cuba_UserSessions")) {
-                            UserSessionFinder sessionFinder = (UserSessionFinder) applicationContext.getBean("cuba_UserSessions");
+                            UserSessions sessionFinder = (UserSessions) applicationContext.getBean("cuba_UserSessions");
                             session = sessionFinder.get(securityContext.getSessionId());
                             if (session != null) {
                                 user = session.getUser().getLogin();

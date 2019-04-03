@@ -14,25 +14,9 @@
  * limitations under the License.
  */
 
-package io.jmix.core.impl
+package io.jmix.core.security.impl;
 
-import com.sample.addon1.TestAddon1Configuration
-import io.jmix.core.JmixCoreConfiguration
-import io.jmix.core.Security
-import org.springframework.test.context.ContextConfiguration
-import spock.lang.Specification
+import io.jmix.core.security.SecurityContext;
 
-import javax.inject.Inject
-
-@ContextConfiguration(classes = [JmixCoreConfiguration, TestAddon1Configuration])
-class DefaultSecurityImplTest extends Specification {
-
-    @Inject
-    Security security
-
-    def "test"() {
-        expect:
-
-        security instanceof DefaultSecurityImpl
-    }
+public class ThreadLocalSecurityContextHolder extends ThreadLocal<SecurityContext> implements SecurityContextHolder {
 }
