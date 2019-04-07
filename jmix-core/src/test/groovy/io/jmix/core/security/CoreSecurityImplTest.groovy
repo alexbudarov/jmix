@@ -18,8 +18,7 @@ package io.jmix.core.security
 
 import com.sample.addon1.TestAddon1Configuration
 import io.jmix.core.JmixCoreConfiguration
-import io.jmix.core.security.Security
-import io.jmix.core.security.impl.DefaultSecurityImpl
+import io.jmix.core.security.impl.CoreSecurityImpl
 import org.springframework.context.ApplicationContext
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.BadCredentialsException
@@ -32,7 +31,7 @@ import spock.lang.Specification
 import javax.inject.Inject
 
 @ContextConfiguration(classes = [JmixCoreConfiguration, TestAddon1Configuration])
-class DefaultSecurityImplTest extends Specification {
+class CoreSecurityImplTest extends Specification {
 
     @Inject
     Security security
@@ -46,7 +45,7 @@ class DefaultSecurityImplTest extends Specification {
     def "Security impl is default"() {
         expect:
 
-        security instanceof DefaultSecurityImpl
+        security instanceof CoreSecurityImpl
     }
 
     def "authentication as admin"() {

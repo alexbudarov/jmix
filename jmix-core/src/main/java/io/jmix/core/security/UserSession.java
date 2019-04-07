@@ -21,19 +21,22 @@ import io.jmix.core.entity.User;
 import org.springframework.security.core.Authentication;
 
 import java.io.Serializable;
-import java.util.LinkedHashMap;
-import java.util.TimeZone;
-import java.util.UUID;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class UserSession {
 
-    private UUID id = UuidProvider.createUuid();
+    protected UUID id = UuidProvider.createUuid();
 
-    private User user;
+    protected User user;
 
-    private Authentication authentication;
+    protected Authentication authentication;
 
-    private String clientInfo;
+    protected ClientDetails clientDetails = ClientDetails.UNKNOWN;
+
+    protected List<String> roles = new ArrayList<>();
+
+    protected Map<String, Serializable> attributes = new ConcurrentHashMap<>();
 
     public UserSession(Authentication authentication) {
         this.authentication = authentication;
@@ -57,35 +60,36 @@ public class UserSession {
         return user;
     }
 
-    public TimeZone getTimeZone() {
-        return null;
-    }
-
     public boolean isSystem() {
         return false;
     }
 
-    public String getAddress() {
-        return null;
+    public ClientDetails getClientDetails() {
+        return clientDetails;
     }
 
-    public String getClientInfo() {
-        return clientInfo;
+    public void setClientDetails(ClientDetails clientDetails) {
+        this.clientDetails = clientDetails;
     }
 
-    public void setClientInfo(String clientInfo) {
-        this.clientInfo = clientInfo;
+    public List<String> getRoles() {
+        return roles;
     }
 
-    public <T> T getAttribute(String attributeName) {
-        return null;
+    @SuppressWarnings("unchecked")
+    public <T> T getAttribute(String name) {
+        return (T) attributes.get(name);
     }
 
     public void setAttribute(String name, Serializable value) {
-
+        attributes.put(name, value);
     }
 
-    public boolean hasConstraints() {
-        return false;
+    public Collection<Object> getAttributeNames() {
+        return new ArrayList<>(attributes.keySet());
+    }
+
+    public void removeAttribute(String name) {
+        attributes.remove(name);
     }
 }

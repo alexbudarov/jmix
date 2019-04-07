@@ -19,78 +19,73 @@ package io.jmix.data.impl;
 import io.jmix.core.security.ConditionalOnSecurityImplementation;
 import io.jmix.core.View;
 import io.jmix.core.entity.Entity;
-import io.jmix.core.metamodel.model.MetaClass;
-import io.jmix.data.PersistenceAttributeSecurity;
+import io.jmix.data.PersistenceSecurity;
+import io.jmix.data.Query;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 
-@Component(PersistenceAttributeSecurity.NAME)
-@ConditionalOnSecurityImplementation("default")
-public class DefaultPersistenceAttributeSecurity implements PersistenceAttributeSecurity {
+@Component(PersistenceSecurity.NAME)
+@ConditionalOnSecurityImplementation("core")
+public class CorePersistenceSecurity implements PersistenceSecurity {
 
     @Override
-    public View createRestrictedView(View view) {
-        return view;
-    }
-
-    @Override
-    public void afterLoad(Entity entity) {
-
-    }
-
-    @Override
-    public void afterLoad(Collection<? extends Entity> entities) {
-
-    }
-
-    @Override
-    public void beforePersist(Entity entity) {
-
-    }
-
-    @Override
-    public void afterPersist(Entity entity, View view) {
-
-    }
-
-    @Override
-    public void beforeMerge(Entity entity) {
-
-    }
-
-    @Override
-    public void afterMerge(Entity entity) {
-
-    }
-
-    @Override
-    public void afterCommit(Entity entity) {
-
-    }
-
-    @Override
-    public void onLoad(Collection<? extends Entity> entities, View view) {
-
-    }
-
-    @Override
-    public void onLoad(Entity entity, View view) {
-
-    }
-
-    @Override
-    public <T extends Entity> void setupAttributeAccess(T entity) {
-
-    }
-
-    @Override
-    public boolean isAttributeAccessEnabled(MetaClass metaClass) {
+    public boolean applyConstraints(Query query) {
         return false;
     }
 
     @Override
-    public boolean isAttributeAccessEnabled() {
+    public void setQueryParam(Query query, String paramName) {
+
+    }
+
+    @Override
+    public void applyConstraints(Entity entity) {
+
+    }
+
+    @Override
+    public void applyConstraints(Collection<Entity> entities) {
+
+    }
+
+    @Override
+    public boolean filterByConstraints(Collection<Entity> entities) {
         return false;
+    }
+
+    @Override
+    public boolean filterByConstraints(Entity entity) {
+        return false;
+    }
+
+    @Override
+    public void restoreSecurityState(Entity entity) {
+
+    }
+
+    @Override
+    public void restoreFilteredData(Entity entity) {
+
+    }
+
+    @Override
+    public void assertToken(Entity entity) {
+
+    }
+
+    @Override
+    public void assertTokenForREST(Entity entity, View view) {
+
+    }
+
+    @Override
+    public void calculateFilteredData(Entity entity) {
+
+    }
+
+    @Override
+    public void calculateFilteredData(Collection<Entity> entities) {
+
     }
 }

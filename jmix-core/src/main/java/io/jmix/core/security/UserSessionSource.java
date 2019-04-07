@@ -35,10 +35,10 @@ public interface UserSessionSource {
     boolean checkCurrentUserSession();
 
     /**
-     * @return current user session
-     * @throws RuntimeException if there is no active user session
+     * @return current user session, never null
+     * @throws NoUserSessionException if there is no active user session
      */
-    UserSession getUserSession();
+    UserSession getUserSession() throws NoUserSessionException;
 
     /**
      * @return effective user ID. This is either the logged in user, or substituted user if a substitution was performed

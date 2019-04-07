@@ -10,16 +10,16 @@ import javax.inject.Inject;
 @SpringBootApplication
 public class SampleCustomSecurityApplication implements CommandLineRunner {
 
-	@Inject
-	private Security security;
+    @Inject
+    private Security security;
 
-	public static void main(String[] args) {
-		SpringApplication.run(SampleCustomSecurityApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(SampleCustomSecurityApplication.class, args);
+    }
 
-	@Override
-	public void run(String... args) throws Exception {
-		System.out.println("Security implementation is " + security.getClass().getName());
-	}
+    @Override
+    public void run(String... args) throws Exception {
+        System.out.println("Security implementation is " + security.getClass().getName());
+    }
 }
 

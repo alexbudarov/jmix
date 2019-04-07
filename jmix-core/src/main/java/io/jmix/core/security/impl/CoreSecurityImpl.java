@@ -23,8 +23,8 @@ import io.jmix.core.security.*;
 import org.springframework.stereotype.Component;
 
 @Component(Security.NAME)
-@ConditionalOnSecurityImplementation("default")
-public class DefaultSecurityImpl implements Security {
+@ConditionalOnSecurityImplementation("core")
+public class CoreSecurityImpl implements Security {
 
     @Override
     public boolean isScreenPermitted(String windowAlias) {

@@ -17,7 +17,7 @@
 package io.jmix.core.security;
 
 import io.jmix.core.security.impl.SystemAuthenticationProvider;
-import io.jmix.core.security.impl.UserDetailsServiceImpl;
+import io.jmix.core.security.impl.CoreUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -27,12 +27,13 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 @Configuration
+@ConditionalOnSecurityImplementation("core")
 @EnableWebSecurity
 public class JmixCoreSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        UserDetailsService userDetailsService = new UserDetailsServiceImpl();
+        UserDetailsService userDetailsService = new CoreUserDetailsService();
         auth.userDetailsService(userDetailsService);
         auth.authenticationProvider(new SystemAuthenticationProvider(userDetailsService));
 

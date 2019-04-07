@@ -14,28 +14,39 @@
  * limitations under the License.
  */
 
-package io.jmix.core.security.impl;
+package io.jmix.security.impl;
 
-import io.jmix.core.entity.User;
+import io.jmix.data.Persistence;
+import io.jmix.data.Transaction;
+import io.jmix.security.entity.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import java.util.Arrays;
 import java.util.List;
 
-public class UserDetailsServiceImpl implements UserDetailsService {
+public class StandardUserDetailsService implements UserDetailsService {
 
-    private List<User> users = Arrays.asList(
-            new DefaultUser("system", "{noop}", "System"),
-            new DefaultUser("admin", "{noop}admin123", "Administrator")
-    );
+    private Persistence persistence;
+
+    public StandardUserDetailsService(Persistence persistence) {
+        this.persistence = persistence;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return users.stream()
-                .filter(user -> user.getLoginLowerCase().equals(username))
-                .findAny()
-                .orElseThrow(() -> new UsernameNotFoundException("User '" + username + "' not found"));
+        try (Transaction tx = persistence.createTransaction()) {
+            List<User> users = persistence.getEntityManager()
+                    .createQuery("select u from sec_User u where u.loginLowerCase = ?1", User.class)
+                    .setParameter(1, username)
+                    .setViewName("user-login")
+                    .getResultList();
+            tx.commit();
+            if (!users.isEmpty()) {
+                return users.get(0);
+            } else {
+                throw new UsernameNotFoundException("User not found");
+            }
+        }
     }
 }

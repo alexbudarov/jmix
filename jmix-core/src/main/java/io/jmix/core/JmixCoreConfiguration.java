@@ -61,7 +61,7 @@ import java.util.Set;
 @Import(JmixCoreSecurityConfiguration.class)
 @ComponentScan
 @JmixComponent(dependsOn = {}, properties = {
-        @JmixProperty(name = "jmix.securityImplementation", value = "default"),
+        @JmixProperty(name = "jmix.securityImplementation", value = "core"),
         @JmixProperty(name = "jmix.viewsConfig", value = "io/jmix/core/views.xml"),
         @JmixProperty(name = "cuba.confDir", value = "./conf")
 })

@@ -16,24 +16,39 @@
 
 package io.jmix.core.security.impl;
 
-import io.jmix.core.security.UserSession;
-import io.jmix.core.security.UserSessionSource;
+import io.jmix.core.compatibility.AppContext;
+import io.jmix.core.security.*;
 import org.springframework.stereotype.Component;
 
+import javax.inject.Inject;
 import java.util.Locale;
 import java.util.UUID;
 
 // todo impl
 @Component
 public class UserSessionSourceImpl implements UserSessionSource {
+
+    @Inject
+    protected UserSessions userSessions;
+
     @Override
     public boolean checkCurrentUserSession() {
         return false;
     }
 
     @Override
-    public UserSession getUserSession() {
-        return null;
+    public UserSession getUserSession() throws NoUserSessionException {
+        SecurityContext securityContext = AppContext.getSecurityContextNN();
+        if (securityContext.getSession() != null
+                && securityContext.getSession().isSystem()) {
+            return securityContext.getSession();
+        }
+
+        UserSession session = userSessions.getAndRefresh(securityContext.getSessionId());
+        if (session == null) {
+            throw new NoUserSessionException(securityContext.getSessionId());
+        }
+        return session;
     }
 
     @Override

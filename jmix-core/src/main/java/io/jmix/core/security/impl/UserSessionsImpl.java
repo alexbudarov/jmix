@@ -363,8 +363,8 @@ public class UserSessionsImpl implements UserSessions {
         use.setId(session.getId());
         use.setLogin(session.getUser().getLoginLowerCase());
         use.setUserName(session.getUser().getName());
-        use.setAddress(session.getAddress());
-        use.setClientInfo(session.getClientInfo());
+        use.setAddress(session.getClientDetails().getAddress());
+        use.setClientInfo(session.getClientDetails().getInfo());
         use.setSince(new Date(since));
         use.setLastUsedTs(new Date(lastUsedTs));
         use.setSystem(session.isSystem());

@@ -41,11 +41,10 @@ class AuthenticatorTest extends Specification {
         then:
 
         UserSession session = AppContext.getSecurityContextNN().getSession()
-        session != null
-        session.getUser().loginLowerCase == 'system'
+        session.user.loginLowerCase == 'system'
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication()
-        authentication != null
+        authentication.principal == session.user
 
         when:
 
@@ -65,13 +64,60 @@ class AuthenticatorTest extends Specification {
         then:
 
         UserSession session = AppContext.getSecurityContextNN().getSession()
-        session != null
-        session.getUser().loginLowerCase == 'admin'
+        session.user.loginLowerCase == 'admin'
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication()
-        authentication != null
+        authentication.principal == session.user
 
         when:
+
+        authenticator.end()
+
+        then:
+
+        AppContext.getSecurityContext() == null
+        SecurityContextHolder.getContext().getAuthentication() == null
+    }
+
+    def "nested authentication"() {
+
+        when: "outer auth"
+
+        authenticator.begin()
+
+        then:
+
+        UserSession outerSession = AppContext.getSecurityContextNN().getSession()
+        outerSession.user.loginLowerCase == 'system'
+
+        Authentication outerAuth = SecurityContextHolder.getContext().getAuthentication()
+        outerAuth.principal == outerSession.user
+
+        when: "inner auth"
+
+        authenticator.begin('admin')
+
+        then:
+
+        UserSession innerSession = AppContext.getSecurityContextNN().getSession()
+        innerSession.user.loginLowerCase == 'admin'
+
+        Authentication innerAuth = SecurityContextHolder.getContext().getAuthentication()
+        innerAuth.principal == innerSession.user
+
+        when: "end inner"
+
+        authenticator.end()
+
+        then:
+
+        UserSession outerSession1 = AppContext.getSecurityContextNN().getSession()
+        outerSession1.user.loginLowerCase == 'system'
+
+        Authentication outerAuth1 = SecurityContextHolder.getContext().getAuthentication()
+        outerAuth1.principal == outerSession1.user
+
+        when: "end outer"
 
         authenticator.end()
 

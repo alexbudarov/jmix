@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.jmix.core.security.impl;
+package io.jmix.samples.customsecurity;
 
 import io.jmix.core.entity.BaseUuidEntity;
 import io.jmix.core.entity.User;
@@ -23,7 +23,7 @@ import org.springframework.security.core.GrantedAuthority;
 import java.util.Collection;
 import java.util.Collections;
 
-public class DefaultUser extends BaseUuidEntity implements User {
+public class CustomUser extends BaseUuidEntity implements User {
 
     private static final long serialVersionUID = 2032149054729862959L;
 
@@ -31,7 +31,7 @@ public class DefaultUser extends BaseUuidEntity implements User {
     private String password;
     private String name;
 
-    public DefaultUser(String login, String password, String name) {
+    public CustomUser(String login, String password, String name) {
         this.login = login;
         this.password = password;
         this.name = name;

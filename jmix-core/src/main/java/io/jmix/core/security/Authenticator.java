@@ -23,11 +23,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Nullable;
 import javax.inject.Inject;
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -40,11 +41,11 @@ import java.util.concurrent.ConcurrentHashMap;
  * <br>
  * Example usage:
  * <pre>
- *     authentication.begin();
+ *     authenticator.begin();
  *     try {
  *         // valid current thread's user session presents here
  *     } finally {
- *         authentication.end();
+ *         authenticator.end();
  *     }
  * </pre>
  */
@@ -55,20 +56,21 @@ public class Authenticator {
 
     private static final Logger log = LoggerFactory.getLogger(Authenticator.class);
 
+    private static final SecurityContext NULL_CONTEXT = new SecurityContext(new UUID(0L, 0L));
+
     @Inject
     protected AuthenticationManager authenticationManager;
 
     @Inject
-    protected UserSessions userSessions;
+    protected UserSessionFactory userSessionFactory;
 
     @Inject
     protected ServerConfig serverConfig;
 
-    protected ThreadLocal<Integer> cleanupCounter = new ThreadLocal<>();
+    protected ThreadLocal<Deque<SecurityContext>> threadLocalStack = new ThreadLocal<>();
 
-    protected Map<String, UUID> sessions = new ConcurrentHashMap<>();
+    protected Map<String, UserSession> sessions = new ConcurrentHashMap<>();
 
-    // todo rework: always authenticate as the given user (impersonate)
     /**
      * Begin an authenticated code block.
      * <br>
@@ -81,56 +83,33 @@ public class Authenticator {
      * @return new or cached instance of system user session
      */
     public UserSession begin(@Nullable String login) {
-        if (cleanupCounter.get() == null) {
-            cleanupCounter.set(0);
-        }
-
-        // check if a current thread session exists, that is we got here from authenticated code
-        SecurityContext securityContext = AppContext.getSecurityContext();
-        if (securityContext != null) {
-            UserSession userSession = userSessions.getAndRefresh(securityContext.getSessionId());
-            if (userSession != null) {
-                log.trace("Already authenticated, do nothing");
-                cleanupCounter.set(cleanupCounter.get() + 1);
-                if (log.isTraceEnabled()) {
-                    log.trace("New cleanup counter value: {}", cleanupCounter.get());
-                }
-                return userSession;
-            }
-        }
-
-        // no current thread session or it is expired - need to authenticate
         if (StringUtils.isBlank(login)) {
             login = getSystemLogin();
         }
 
-        UserSession session = null;
+        UserSession session;
         log.trace("Authenticating as {}", login);
-        UUID sessionId = sessions.get(login);
-        if (sessionId != null) {
-            session = userSessions.getAndRefresh(sessionId);
-        }
+        session = sessions.get(login);
         if (session == null) {
-            // saved session doesn't exist or is expired
+            // saved session doesn't exist
             synchronized (this) {
                 // double check to prevent the same log in by subsequent threads
-                sessionId = sessions.get(login);
-                if (sessionId != null) {
-                    session = userSessions.get(sessionId);
-                }
+                session = sessions.get(login);
                 if (session == null) {
                     try {
                         Authentication authToken = new SystemAuthenticationToken(login);
                         Authentication authentication = authenticationManager.authenticate(authToken);
-                        session = new UserSession(authentication);
-                        session.setClientInfo("System authentication");
-                    } catch (AuthenticationException e) {
+                        session = userSessionFactory.create(authentication);
+                        session.setClientDetails(ClientDetails.builder().info("System authentication").build());
+                    } catch (LoginException e) {
                         throw new RuntimeException("Unable to perform system login", e);
                     }
-                    sessions.put(login, session.getId());
+                    sessions.put(login, session);
                 }
             }
         }
+
+        pushSecurityContext(AppContext.getSecurityContext());
 
         AppContext.setSecurityContext(new SecurityContext(session));
 
@@ -153,17 +132,9 @@ public class Authenticator {
      * Must be called in "finally" section of a try/finally block.
      */
     public void end() {
-        if (cleanupCounter.get() == null || cleanupCounter.get() < 0) {
-            log.warn("Cleanup counter is null or invalid");
-        } else if (cleanupCounter.get() == 0) {
-            log.trace("Cleanup SecurityContext");
-            AppContext.setSecurityContext(null);
-            cleanupCounter.remove();
-        } else {
-            log.trace("Do not own authentication, cleanup not required");
-            cleanupCounter.set(cleanupCounter.get() - 1);
-            log.trace("New cleanup counter value: {}", cleanupCounter.get());
-        }
+        log.trace("Set previous SecurityContext");
+        SecurityContext previous = popSecurityContext();
+        AppContext.setSecurityContext(previous);
     }
 
     /**
@@ -203,6 +174,41 @@ public class Authenticator {
 
     protected String getSystemLogin() {
         return serverConfig.getSystemUserLogin();
+    }
+
+    private void pushSecurityContext(SecurityContext securityContext) {
+        Deque<SecurityContext> stack = threadLocalStack.get();
+        if (stack == null) {
+            stack = new ArrayDeque<>();
+            threadLocalStack.set(stack);
+        } else {
+            if (stack.size() > 10) {
+                log.warn("Stack is too big: {}. Check correctness of begin/end invocations.", stack.size());
+            }
+        }
+        if (securityContext == null) {
+            securityContext = NULL_CONTEXT;
+        }
+        stack.push(securityContext);
+    }
+
+    private SecurityContext popSecurityContext() {
+        Deque<SecurityContext> stack = threadLocalStack.get();
+        if (stack != null) {
+            SecurityContext securityContext = stack.poll();
+            if (securityContext != null) {
+                if (securityContext == NULL_CONTEXT) {
+                    return null;
+                } else {
+                    return securityContext;
+                }
+            } else {
+                log.warn("Stack is empty. Check correctness of begin/end invocations.");
+            }
+        } else {
+            log.warn("Stack does not exist. Check correctness of begin/end invocations.");
+        }
+        return null;
     }
 
     public interface AuthenticatedOperation<T> {

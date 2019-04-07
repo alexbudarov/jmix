@@ -16,21 +16,24 @@
 
 package io.jmix.security.impl;
 
-import io.jmix.core.security.ConstraintOperationType;
-import io.jmix.core.security.EntityAttrAccess;
-import io.jmix.core.security.EntityOp;
-import io.jmix.core.security.Security;
+import io.jmix.core.security.*;
 import io.jmix.core.entity.Entity;
 import io.jmix.core.metamodel.model.MetaClass;
 import io.jmix.core.metamodel.model.MetaPropertyPath;
 import org.springframework.stereotype.Component;
 
+import javax.inject.Inject;
+
 @Component(Security.NAME)
 public class StandardSecurity implements Security {
 
+    @Inject
+    protected UserSessionSource userSessionSource;
+
     @Override
     public boolean isScreenPermitted(String windowAlias) {
-        return false;
+        StandardUserSession session = (StandardUserSession) userSessionSource.getUserSession();
+        return session.isPermitted(PermissionType.SCREEN, windowAlias, 1);
     }
 
     @Override

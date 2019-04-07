@@ -143,7 +143,7 @@ public class MetadataTools {
                 Boolean ignoreUserTimeZone = getMetaAnnotationValue(property, IgnoreUserTimeZone.class);
                 if (!Boolean.TRUE.equals(ignoreUserTimeZone)) {
                     return ((TimeZoneAwareDatatype) datatype).format(value,
-                            userSessionSource.getLocale(), userSessionSource.getUserSession().getTimeZone());
+                            userSessionSource.getLocale(), userSessionSource.getUserSession().getClientDetails().getTimeZone());
                 }
             }
             return datatype.format(value, userSessionSource.getLocale());
@@ -575,7 +575,7 @@ public class MetadataTools {
      */
     public boolean isPersistent(MetaClass metaClass) {
         checkNotNullArgument(metaClass, "metaClass is null");
-        return Boolean.TRUE.equals(metaClass.getAnnotations().get(PERSISTENT_ANN_NAME))
+        return metaClass.getStore().getDescriptor().isPersistent()
                 && metaClass.getJavaClass().isAnnotationPresent(javax.persistence.Entity.class);
     }
 
