@@ -16,18 +16,34 @@
 
 package io.jmix.core.security.impl;
 
-import io.jmix.core.security.ConditionalOnSecurityImplementation;
-import io.jmix.core.security.UserSession;
-import io.jmix.core.security.UserSessionFactory;
+import io.jmix.core.security.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
+
+import java.util.UUID;
 
 @Component(UserSessionFactory.NAME)
 @ConditionalOnSecurityImplementation("core")
 public class CoreUserSessionFactory implements UserSessionFactory {
 
+    private final UserSession SERVER_SESSION;
+
+    public CoreUserSessionFactory() {
+        CoreUser user = new CoreUser("server", "", "Server");
+        SystemAuthenticationToken authentication = new SystemAuthenticationToken(user);
+        SERVER_SESSION = new UserSession(authentication) {
+            { id = new UUID(1L, 1L); }
+        };
+        SERVER_SESSION.setClientDetails(ClientDetails.builder().info("System authentication").build());
+    }
+
     @Override
     public UserSession create(Authentication authentication) {
         return new UserSession(authentication);
+    }
+
+    @Override
+    public UserSession getServerSession() {
+        return SERVER_SESSION;
     }
 }

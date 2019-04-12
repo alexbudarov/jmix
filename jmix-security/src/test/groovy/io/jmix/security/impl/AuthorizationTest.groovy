@@ -16,19 +16,17 @@
 
 package io.jmix.security.impl
 
-
 import io.jmix.core.DataManager
 import io.jmix.core.JmixCoreConfiguration
+import io.jmix.core.Metadata
+import io.jmix.core.security.ConstraintOperationType
 import io.jmix.core.security.PermissionType
 import io.jmix.core.security.Security
 import io.jmix.core.security.UserSessionManager
 import io.jmix.data.JmixDataConfiguration
+import io.jmix.data.PersistenceSecurity
 import io.jmix.security.JmixSecurityConfiguration
-import io.jmix.security.entity.Permission
-import io.jmix.security.entity.Role
-import io.jmix.security.entity.RoleType
-import io.jmix.security.entity.User
-import io.jmix.security.entity.UserRole
+import io.jmix.security.entity.*
 import io.jmix.security.test.JmixSecurityTestConfiguration
 import io.jmix.security.test.TestSupport
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -50,8 +48,10 @@ class AuthorizationTest extends Specification {
     UserSessionManager userSessionManager
 
     @Inject
-    Security security
+    Metadata metadata
 
+    @Inject
+    Security security
 
     def "create session and check permissions"() {
 
@@ -87,5 +87,34 @@ class AuthorizationTest extends Specification {
 
         userSessionManager.removeSession()
         testSupport.deleteRecord(userRole1, userRole2, permission11, role1, role2, user)
+    }
+
+    def "create session and check constraints"() {
+
+        def group = new Group(name: 'group1', constraints: [])
+        def constraint = new Constraint(group: group, checkType: ConstraintCheckType.DATABASE, operationType: ConstraintOperationType.READ, entityName: 'test_Foo', whereClause: '{E}.createdBy = :session_userLogin')
+        group.constraints.add(constraint)
+
+        def user = new User(login: 'user1', password: '{noop}123', group: group)
+
+        dataManager.commit(constraint, group, user)
+
+        when:
+
+        def token = new UsernamePasswordAuthenticationToken('user1', '123')
+        StandardUserSession session = userSessionManager.createSession(token) as StandardUserSession
+
+        then:
+
+        session.user == user
+        session.getConstraints('test_Foo').size() == 1
+
+        security.hasConstraints()
+        security.hasConstraints(metadata.getClassNN('test_Foo'))
+
+        cleanup:
+
+        userSessionManager.removeSession()
+        testSupport.deleteRecord(user, constraint, group)
     }
 }

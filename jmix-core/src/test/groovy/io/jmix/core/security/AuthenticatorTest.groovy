@@ -41,7 +41,8 @@ class AuthenticatorTest extends Specification {
         then:
 
         UserSession session = AppContext.getSecurityContextNN().getSession()
-        session.user.loginLowerCase == 'system'
+        session.user.loginLowerCase == 'server'
+        session.system
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication()
         authentication.principal == session.user
@@ -65,6 +66,7 @@ class AuthenticatorTest extends Specification {
 
         UserSession session = AppContext.getSecurityContextNN().getSession()
         session.user.loginLowerCase == 'admin'
+        session.system
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication()
         authentication.principal == session.user
@@ -88,7 +90,7 @@ class AuthenticatorTest extends Specification {
         then:
 
         UserSession outerSession = AppContext.getSecurityContextNN().getSession()
-        outerSession.user.loginLowerCase == 'system'
+        outerSession.user.loginLowerCase == 'server'
 
         Authentication outerAuth = SecurityContextHolder.getContext().getAuthentication()
         outerAuth.principal == outerSession.user
@@ -101,6 +103,7 @@ class AuthenticatorTest extends Specification {
 
         UserSession innerSession = AppContext.getSecurityContextNN().getSession()
         innerSession.user.loginLowerCase == 'admin'
+        innerSession.system
 
         Authentication innerAuth = SecurityContextHolder.getContext().getAuthentication()
         innerAuth.principal == innerSession.user
@@ -112,7 +115,7 @@ class AuthenticatorTest extends Specification {
         then:
 
         UserSession outerSession1 = AppContext.getSecurityContextNN().getSession()
-        outerSession1.user.loginLowerCase == 'system'
+        outerSession1.user.loginLowerCase == 'server'
 
         Authentication outerAuth1 = SecurityContextHolder.getContext().getAuthentication()
         outerAuth1.principal == outerSession1.user

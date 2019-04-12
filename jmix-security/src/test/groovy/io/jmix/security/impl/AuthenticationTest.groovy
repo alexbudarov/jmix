@@ -55,6 +55,7 @@ class AuthenticationTest extends Specification {
 
         then:
 
+        AppContext.getSecurityContext().session == session
         session.user == user
 
         when:

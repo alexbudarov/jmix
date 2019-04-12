@@ -58,12 +58,12 @@ public class CustomSecurityImpl implements Security {
     }
 
     @Override
-    public boolean isEntityAttrUpdatePermitted(MetaPropertyPath propertyPath) {
+    public boolean isEntityAttrUpdatePermitted(MetaPropertyPath metaPropertyPath) {
         return false;
     }
 
     @Override
-    public boolean isEntityAttrReadPermitted(MetaPropertyPath propertyPath) {
+    public boolean isEntityAttrReadPermitted(MetaPropertyPath metaPropertyPath) {
         return false;
     }
 

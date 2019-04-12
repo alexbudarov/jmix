@@ -24,7 +24,6 @@ import javax.inject.Inject;
 import java.util.Locale;
 import java.util.UUID;
 
-// todo impl
 @Component
 public class UserSessionSourceImpl implements UserSessionSource {
 
@@ -33,31 +32,40 @@ public class UserSessionSourceImpl implements UserSessionSource {
 
     @Override
     public boolean checkCurrentUserSession() {
-        return false;
+        SecurityContext securityContext = AppContext.getSecurityContext();
+        if (securityContext == null) {
+            return false;
+        }
+        if (securityContext.getSession().isSystem()) {
+            return true;
+        }
+        UserSession session = userSessions.getAndRefresh(securityContext.getSession().getId());
+        return session != null;
     }
 
     @Override
     public UserSession getUserSession() throws NoUserSessionException {
         SecurityContext securityContext = AppContext.getSecurityContextNN();
-        if (securityContext.getSession() != null
-                && securityContext.getSession().isSystem()) {
+        if (securityContext.getSession().isSystem()) {
             return securityContext.getSession();
         }
 
-        UserSession session = userSessions.getAndRefresh(securityContext.getSessionId());
+        UserSession session = userSessions.getAndRefresh(securityContext.getSession().getId());
         if (session == null) {
-            throw new NoUserSessionException(securityContext.getSessionId());
+            throw new NoUserSessionException(securityContext.getSession().getId());
         }
         return session;
     }
 
     @Override
     public UUID currentOrSubstitutedUserId() {
-        return null;
+        // todo user substitution
+        return getUserSession().getUser().getId();
     }
 
     @Override
     public Locale getLocale() {
+        // todo user session locale
         return null;
     }
 }

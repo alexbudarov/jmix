@@ -32,7 +32,7 @@ import java.util.Set;
  */
 @Entity(name = "sec_Group")
 @Table(name = "SEC_GROUP")
-@Listeners("cuba_GroupEntityListener")
+@Listeners("jmix_GroupEntityListener")
 @NamePattern("%s|name")
 @TrackEditScreenHistory
 public class Group extends StandardEntity {

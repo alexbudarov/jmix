@@ -18,11 +18,13 @@ package com.sample.singlerun;
 
 import io.jmix.core.event.AppContextInitializedEvent;
 import io.jmix.core.event.AppContextStartedEvent;
+import io.jmix.core.security.UserSessionSource;
 import org.springframework.context.event.ApplicationContextEvent;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +32,9 @@ import java.util.List;
 public class AppContextLifecycleListener {
 
     List<ApplicationContextEvent> events = new ArrayList<>();
+
+    @Inject
+    private UserSessionSource userSessionSource;
 
     public List<ApplicationContextEvent> getEvents() {
         return events;
@@ -43,10 +48,12 @@ public class AppContextLifecycleListener {
     @EventListener
     void onInitialized(AppContextInitializedEvent event) {
         events.add(event);
+        assert userSessionSource.getUserSession().isSystem();
     }
 
     @EventListener
     void onStarted(AppContextStartedEvent event) {
         events.add(event);
+        assert userSessionSource.getUserSession().isSystem();
     }
 }

@@ -55,9 +55,6 @@ public class AppContext {
     private static volatile boolean started;
     private static volatile boolean listenersNotified;
 
-    public static final SecurityContext NO_USER_CONTEXT =
-            new SecurityContext(UUID.fromString("23dce942-d13f-11df-88cd-b3d32fd1e595"), "server");
-
     /**
      * INTERNAL.
      * Used by other framework classes to get access Spring's context.
@@ -105,10 +102,7 @@ public class AppContext {
      */
     @Nullable
     public static SecurityContext getSecurityContext() {
-        if (started)
-            return securityContextHolder.get();
-        else
-            return NO_USER_CONTEXT;
+        return securityContextHolder.get();
     }
 
     /**
@@ -118,6 +112,7 @@ public class AppContext {
     public static SecurityContext getSecurityContextNN() {
         SecurityContext securityContext = getSecurityContext();
         if (securityContext == null)
+            // todo think about using NoUserSessionException or introduce a specific exception
             throw new SecurityException("No security context bound to the current thread");
 
         return securityContext;

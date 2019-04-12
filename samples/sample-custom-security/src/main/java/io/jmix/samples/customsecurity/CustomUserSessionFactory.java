@@ -16,6 +16,8 @@
 
 package io.jmix.samples.customsecurity;
 
+import io.jmix.core.security.ClientDetails;
+import io.jmix.core.security.SystemAuthenticationToken;
 import io.jmix.core.security.UserSession;
 import io.jmix.core.security.UserSessionFactory;
 import org.springframework.security.core.Authentication;
@@ -24,8 +26,22 @@ import org.springframework.stereotype.Component;
 @Component(UserSessionFactory.NAME)
 public class CustomUserSessionFactory implements UserSessionFactory {
 
+    private final UserSession SERVER_SESSION;
+
+    public CustomUserSessionFactory() {
+        CustomUser user = new CustomUser("server", "", "Server");
+        SystemAuthenticationToken authentication = new SystemAuthenticationToken(user);
+        SERVER_SESSION = new CustomUserSession(authentication);
+        SERVER_SESSION.setClientDetails(ClientDetails.builder().info("System authentication").build());
+    }
+
     @Override
     public UserSession create(Authentication authentication) {
         return new CustomUserSession(authentication);
+    }
+
+    @Override
+    public UserSession getServerSession() {
+        return SERVER_SESSION;
     }
 }

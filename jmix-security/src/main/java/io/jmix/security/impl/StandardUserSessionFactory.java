@@ -21,9 +21,7 @@ import io.jmix.core.Metadata;
 import io.jmix.core.metamodel.datatypes.Datatype;
 import io.jmix.core.metamodel.datatypes.DatatypeRegistry;
 import io.jmix.core.metamodel.model.MetaClass;
-import io.jmix.core.security.PermissionType;
-import io.jmix.core.security.UserSession;
-import io.jmix.core.security.UserSessionFactory;
+import io.jmix.core.security.*;
 import io.jmix.data.EntityManager;
 import io.jmix.data.Persistence;
 import io.jmix.data.Transaction;
@@ -39,6 +37,7 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component(UserSessionFactory.NAME)
@@ -61,6 +60,21 @@ public class StandardUserSessionFactory implements UserSessionFactory {
     @Inject
     protected DatatypeRegistry datatypeRegistry;
 
+    private final StandardUserSession SERVER_SESSION;
+
+    public StandardUserSessionFactory() {
+        User user = new User();
+        user.setLogin("server");
+        user.setLoginLowerCase("server");
+        user.setPassword("");
+        user.setName("Server");
+        SystemAuthenticationToken authentication = new SystemAuthenticationToken(user);
+        SERVER_SESSION = new StandardUserSession(authentication) {
+            { id = new UUID(1L, 1L); }
+        };
+        SERVER_SESSION.setClientDetails(ClientDetails.builder().info("System authentication").build());
+    }
+
     @Override
     public UserSession create(Authentication authentication) {
         StandardUserSession session = new StandardUserSession(authentication);
@@ -71,6 +85,11 @@ public class StandardUserSessionFactory implements UserSessionFactory {
             tx.commit();
         }
         return session;
+    }
+
+    @Override
+    public UserSession getServerSession() {
+        return SERVER_SESSION;
     }
 
     protected void compilePermissions(StandardUserSession session) {
@@ -130,7 +149,7 @@ public class StandardUserSessionFactory implements UserSessionFactory {
             return;
 
         EntityManager em = persistence.getEntityManager();
-        TypedQuery<Constraint> q = em.createQuery("select c from sec$GroupHierarchy h join h.parent.constraints c " +
+        TypedQuery<Constraint> q = em.createQuery("select c from sec_GroupHierarchy h join h.parent.constraints c " +
                 "where h.group.id = ?1", Constraint.class);
         q.setParameter(1, group.getId());
         List<Constraint> constraints = q.getResultList();
@@ -151,7 +170,7 @@ public class StandardUserSessionFactory implements UserSessionFactory {
         List<SessionAttribute> list = new ArrayList<>(group.getSessionAttributes());
 
         EntityManager em = persistence.getEntityManager();
-        TypedQuery<SessionAttribute> q = em.createQuery("select a from sec$GroupHierarchy h join h.parent.sessionAttributes a " +
+        TypedQuery<SessionAttribute> q = em.createQuery("select a from sec_GroupHierarchy h join h.parent.sessionAttributes a " +
                 "where h.group.id = ?1 order by h.level desc", SessionAttribute.class);
         q.setParameter(1, group.getId());
         List<SessionAttribute> attributes = q.getResultList();

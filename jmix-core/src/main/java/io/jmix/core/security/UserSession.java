@@ -32,6 +32,8 @@ public class UserSession {
 
     protected Authentication authentication;
 
+    protected boolean system;
+
     protected ClientDetails clientDetails = ClientDetails.UNKNOWN;
 
     protected List<String> roles = new ArrayList<>();
@@ -46,6 +48,12 @@ public class UserSession {
             throw new UnsupportedOperationException("UserSession does not support principal of type "
                     + authentication.getPrincipal().getClass().getName());
         }
+        if (authentication instanceof SystemAuthenticationToken) {
+            system = true;
+        }
+    }
+
+    protected UserSession() {
     }
 
     public Authentication getAuthentication() {
@@ -61,7 +69,7 @@ public class UserSession {
     }
 
     public boolean isSystem() {
-        return false;
+        return system;
     }
 
     public ClientDetails getClientDetails() {
@@ -91,5 +99,13 @@ public class UserSession {
 
     public void removeAttribute(String name) {
         attributes.remove(name);
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "{" +
+                "id=" + id + "," +
+                "user=" + user.getUsername() +
+                '}';
     }
 }

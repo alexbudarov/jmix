@@ -16,11 +16,14 @@
 
 package io.jmix.core.security;
 
-import io.jmix.core.ServerConfig;
+import com.google.common.base.Strings;
+import io.jmix.core.Events;
 import io.jmix.core.compatibility.AppContext;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.context.event.EventListener;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
@@ -56,7 +59,7 @@ public class Authenticator {
 
     private static final Logger log = LoggerFactory.getLogger(Authenticator.class);
 
-    private static final SecurityContext NULL_CONTEXT = new SecurityContext(new UUID(0L, 0L));
+    private static final SecurityContext NULL_CONTEXT = new SecurityContext(new NullSession());
 
     @Inject
     protected AuthenticationManager authenticationManager;
@@ -64,49 +67,58 @@ public class Authenticator {
     @Inject
     protected UserSessionFactory userSessionFactory;
 
-    @Inject
-    protected ServerConfig serverConfig;
-
     protected ThreadLocal<Deque<SecurityContext>> threadLocalStack = new ThreadLocal<>();
 
     protected Map<String, UserSession> sessions = new ConcurrentHashMap<>();
 
+    @EventListener
+    @Order(Events.HIGHEST_CORE_PRECEDENCE + 5)
+    protected void beginServerSessionOnStartup(ContextRefreshedEvent event) {
+        begin();
+    }
+
+    @EventListener
+    @Order(Events.LOWEST_CORE_PRECEDENCE - 5)
+    protected void endServerSessionOnStartup(ContextRefreshedEvent event) {
+        end();
+    }
+
     /**
-     * Begin an authenticated code block.
+     * Begins an authenticated code block.
      * <br>
-     * If a valid current thread session exists, does nothing.
-     * Otherwise sets the current thread session, logging in if necessary.
-     * <br>
+     * Saves the current thread session on a stack to get it back on {@link #end()}.
      * Subsequent {@link #end()} method must be called in "finally" section.
      *
-     * @param login user login. If null, a value of {@code cuba.jmxUserLogin} app property is used.
+     * @param login user login. If null, the 'server' system session is started
      * @return new or cached instance of system user session
      */
     public UserSession begin(@Nullable String login) {
-        if (StringUtils.isBlank(login)) {
-            login = getSystemLogin();
-        }
-
         UserSession session;
-        log.trace("Authenticating as {}", login);
-        session = sessions.get(login);
-        if (session == null) {
-            // saved session doesn't exist
-            synchronized (this) {
-                // double check to prevent the same log in by subsequent threads
-                session = sessions.get(login);
-                if (session == null) {
-                    try {
-                        Authentication authToken = new SystemAuthenticationToken(login);
-                        Authentication authentication = authenticationManager.authenticate(authToken);
-                        session = userSessionFactory.create(authentication);
-                        session.setClientDetails(ClientDetails.builder().info("System authentication").build());
-                    } catch (LoginException e) {
-                        throw new RuntimeException("Unable to perform system login", e);
+
+        if (!Strings.isNullOrEmpty(login)) {
+            log.trace("Authenticating as {}", login);
+            session = sessions.get(login);
+            if (session == null) {
+                // saved session doesn't exist
+                synchronized (this) {
+                    // double check to prevent the same log in by subsequent threads
+                    session = sessions.get(login);
+                    if (session == null) {
+                        try {
+                            Authentication authToken = new SystemAuthenticationToken(login);
+                            Authentication authentication = authenticationManager.authenticate(authToken);
+                            session = userSessionFactory.create(authentication);
+                            session.setClientDetails(ClientDetails.builder().info("System authentication").build());
+                        } catch (LoginException e) {
+                            throw new RuntimeException("Unable to perform system login", e);
+                        }
+                        sessions.put(login, session);
                     }
-                    sessions.put(login, session);
                 }
             }
+        } else {
+            log.trace("Authenticating as server");
+            session = userSessionFactory.getServerSession();
         }
 
         pushSecurityContext(AppContext.getSecurityContext());
@@ -117,9 +129,9 @@ public class Authenticator {
     }
 
     /**
-     * Authenticate with login set in {@code cuba.jmxUserLogin} app property.
+     * Authenticate with the 'server' system session.
      * <br>
-     * Same as {@link #begin(String)} with null parameter
+     * Same as {@link #begin(String)} with null parameter.
      */
     public UserSession begin() {
         return begin(null);
@@ -128,7 +140,7 @@ public class Authenticator {
     /**
      * End of an authenticated code block.
      * <br>
-     * Performs cleanup for SecurityContext if there was previous loginOnce in this thread.
+     * The previous session (or null) is set to security context.
      * Must be called in "finally" section of a try/finally block.
      */
     public void end() {
@@ -140,7 +152,7 @@ public class Authenticator {
     /**
      * Execute code on behalf of the specified user.
      *
-     * @param login     user login. If null, a value of {@code cuba.jmxUserLogin} app property is used.
+     * @param login     user login. If null, the 'server' system session is used.
      * @param operation code to execute
      * @return result of the execution
      */
@@ -156,12 +168,12 @@ public class Authenticator {
     }
 
     /**
-     * Execute code on behalf of the user with login set in {@code cuba.jmxUserLogin} app property.
+     * Execute code as the 'server' system user.
      *
      * @param operation code to execute
      * @return result of the execution
      */
-    public <T> T withSystemUser(AuthenticatedOperation<T> operation) {
+    public <T> T withServer(AuthenticatedOperation<T> operation) {
         SecurityContext previousSecurityContext = AppContext.getSecurityContext();
         AppContext.setSecurityContext(null);
         try {
@@ -170,10 +182,6 @@ public class Authenticator {
         } finally {
             AppContext.setSecurityContext(previousSecurityContext);
         }
-    }
-
-    protected String getSystemLogin() {
-        return serverConfig.getSystemUserLogin();
     }
 
     private void pushSecurityContext(SecurityContext securityContext) {
@@ -213,5 +221,11 @@ public class Authenticator {
 
     public interface AuthenticatedOperation<T> {
         T call();
+    }
+
+    private static class NullSession extends UserSession {
+        public NullSession() {
+            id = new UUID(0L, 0L);
+        }
     }
 }

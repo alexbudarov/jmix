@@ -14,15 +14,28 @@
  * limitations under the License.
  */
 
-package io.jmix.core.security;
+package io.jmix.security.test.entity;
 
-import org.springframework.security.core.Authentication;
+import io.jmix.core.entity.StandardEntity;
 
-public interface UserSessionFactory {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
-    String NAME = "jmix_UserSessionFactory";
+@Entity(name = "test_Foo")
+@Table(name = "TEST_FOO")
+public class Foo extends StandardEntity {
 
-    UserSession create(Authentication authentication);
+    private static final long serialVersionUID = -6329844972467897878L;
 
-    UserSession getServerSession();
+    @Column(name = "NAME")
+    private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

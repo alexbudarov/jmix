@@ -58,7 +58,6 @@ public class MetadataTools {
 
     public static final String NAME = "jmix_MetadataTools";
 
-    public static final String PERSISTENT_ANN_NAME = "cuba.persistent";
     public static final String PRIMARY_KEY_ANN_NAME = "cuba.primaryKey";
     public static final String EMBEDDED_ANN_NAME = "cuba.embedded";
     public static final String TEMPORAL_ANN_NAME = "cuba.temporal";
@@ -399,34 +398,16 @@ public class MetadataTools {
     /**
      * Determine whether the given property is persistent, that is managed by ORM.
      * <p>
-     * A property is persistent if it is defined in a class registered in persistence.xml and the corresponding
+     * A property is persistent if it is defined in a persistent entity and the corresponding
      * attribute is managed by ORM, i.e. has an annotation like {@code @Column}, {@code @JoinColumn}, etc.
-     * <p>
-     * Note that for properties of non-persistent classes inherited from base classes like {@code BaseUuidEntity}
-     * this method returns true. This is because a meta-property belongs to a class where it is defined, and this method
-     * has no input identifying the real class of interest.
-     * E.g. if you have class {@code Foo extends BaseUuidEntity}, then for the {@code Foo.id} attribute the method
-     * returns true even if the {@code Foo} is defined in metadata.xml and hence not persistent.
-     * <p>
-     * If you need a strict check of whether a certain attribute of an entity is stored in the database via ORM, use
-     * {@link #isPersistent(MetaClass, MetaProperty)}.
      */
     public boolean isPersistent(MetaProperty metaProperty) {
         Objects.requireNonNull(metaProperty, "metaProperty is null");
-        return Boolean.TRUE.equals(metaProperty.getAnnotations().get(PERSISTENT_ANN_NAME));
+        return metaProperty.getStore().getDescriptor().isPersistent();
     }
 
     /**
-     * Determine whether the given property is persistent, that is managed by ORM.
-     */
-    public boolean isPersistent(MetaClass metaClass, MetaProperty metaProperty) {
-        Objects.requireNonNull(metaClass, "metaClass is null");
-        Objects.requireNonNull(metaProperty, "metaProperty is null");
-        return isPersistent(metaClass) && Boolean.TRUE.equals(metaProperty.getAnnotations().get(PERSISTENT_ANN_NAME));
-    }
-
-    /**
-     * Determine whether the given property is not persistent. Inverse of {@link #isPersistent(MetaClass, MetaProperty)}.
+     * Determine whether the given property is not persistent. Inverse of {@link #isPersistent(MetaProperty)}.
      * <p>
      * For objects and properties not registered in metadata this method returns {@code true}.
      */
@@ -436,7 +417,7 @@ public class MetadataTools {
         if (metaClass == null)
             return true;
         MetaProperty metaProperty = metaClass.getProperty(property);
-        return metaProperty == null || !isPersistent(metaClass, metaProperty);
+        return metaProperty == null || !isPersistent(metaProperty);
     }
 
     /**
@@ -447,20 +428,14 @@ public class MetadataTools {
     }
 
     /**
-     * Determine whether the given property is not persistent. Inverse of {@link #isPersistent(MetaClass, MetaProperty)}.
-     */
-    public boolean isNotPersistent(MetaClass metaClass, MetaProperty metaProperty) {
-        return !isPersistent(metaClass, metaProperty);
-    }
-
-    /**
      * Determine whether the given property denotes an embedded object.
      *
      * @see Embedded
      */
     public boolean isEmbedded(MetaProperty metaProperty) {
         Objects.requireNonNull(metaProperty, "metaProperty is null");
-        return Boolean.TRUE.equals(metaProperty.getAnnotations().get(EMBEDDED_ANN_NAME));
+        return metaProperty.getAnnotatedElement() != null
+                && metaProperty.getAnnotatedElement().isAnnotationPresent(Embedded.class);
     }
 
     /**
@@ -593,13 +568,13 @@ public class MetadataTools {
     /**
      * Determine whether the given metaclass represents a non-persistent entity.
      * <p>
-     * A non-persistent entity is not managed by ORM (i.e. registered in a metadata.xml file).
+     * A non-persistent entity is not managed by ORM.
      * <p>
      * Note that {@code isNotPersistent()} is not the same as {@code !isPersistent()}, because the latter does not
-     * include MappedSuperclass and Embeddable entities that a still managed by ORM.
+     * include MappedSuperclass and Embeddable entities that are still managed by ORM.
      */
     public boolean isNotPersistent(MetaClass metaClass) {
-        return !Boolean.TRUE.equals(metaClass.getAnnotations().get(PERSISTENT_ANN_NAME));
+        return !metaClass.getStore().getDescriptor().isPersistent();
     }
 
     /**
@@ -620,7 +595,7 @@ public class MetadataTools {
      */
     public boolean isEmbeddable(MetaClass metaClass) {
         checkNotNullArgument(metaClass, "metaClass is null");
-        return Boolean.TRUE.equals(metaClass.getAnnotations().get(PERSISTENT_ANN_NAME))
+        return metaClass.getStore().getDescriptor().isPersistent()
                 && metaClass.getJavaClass().isAnnotationPresent(javax.persistence.Embeddable.class);
     }
 
@@ -629,8 +604,7 @@ public class MetadataTools {
      */
     public boolean isEmbeddable(Class<?> aClass) {
         checkNotNullArgument(aClass, "Class is null");
-        return Boolean.TRUE.equals(metadata.getClassNN(aClass).getAnnotations().get(PERSISTENT_ANN_NAME))
-                && aClass.isAnnotationPresent(javax.persistence.Embeddable.class);
+        return isEmbeddable(metadata.getClassNN(aClass));
     }
 
     public boolean isCacheable(MetaClass metaClass) {

@@ -102,7 +102,7 @@ public class User extends StandardEntity implements io.jmix.core.entity.User {
     @Composition
     protected List<UserRole> userRoles;
 
-    // todo UserSubstitution
+    // todo user substitution
 //    @OneToMany(mappedBy = "user")
 //    @OrderBy("createTs")
 //    @Composition

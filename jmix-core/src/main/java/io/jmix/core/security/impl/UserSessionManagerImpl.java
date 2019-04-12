@@ -41,9 +41,6 @@ public class UserSessionManagerImpl implements UserSessionManager {
     @Inject
     protected UserSessionFactory userSessionFactory;
 
-    @Inject
-    protected UserSessionSource userSessionSource;
-
     @Override
     public UserSession createSession(Authentication authToken) {
         try {
@@ -62,7 +59,12 @@ public class UserSessionManagerImpl implements UserSessionManager {
     @Override
     public void removeSession() {
         try {
-            UserSession session = userSessionSource.getUserSession();
+            SecurityContext securityContext = AppContext.getSecurityContext();
+            if (securityContext == null) {
+                log.warn("No security context to remove");
+                return;
+            }
+            UserSession session = securityContext.getSession();
             userSessions.remove(session);
             AppContext.setSecurityContext(null);
 

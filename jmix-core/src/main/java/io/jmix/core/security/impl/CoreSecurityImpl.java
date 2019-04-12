@@ -57,12 +57,12 @@ public class CoreSecurityImpl implements Security {
     }
 
     @Override
-    public boolean isEntityAttrUpdatePermitted(MetaPropertyPath propertyPath) {
+    public boolean isEntityAttrUpdatePermitted(MetaPropertyPath metaPropertyPath) {
         return true;
     }
 
     @Override
-    public boolean isEntityAttrReadPermitted(MetaPropertyPath propertyPath) {
+    public boolean isEntityAttrReadPermitted(MetaPropertyPath metaPropertyPath) {
         return true;
     }
 

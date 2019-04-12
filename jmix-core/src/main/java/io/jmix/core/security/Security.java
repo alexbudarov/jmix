@@ -103,9 +103,9 @@ public interface Security {
      *
      * Takes into account original metaclass of entity.
      *
-     * @param propertyPath entity attribute path
+     * @param metaPropertyPath entity attribute path
      */
-    boolean isEntityAttrUpdatePermitted(MetaPropertyPath propertyPath);
+    boolean isEntityAttrUpdatePermitted(MetaPropertyPath metaPropertyPath);
 
     /**
      * Check if current user can read an entity attribute which is the last part of the path given.
@@ -118,9 +118,9 @@ public interface Security {
      *
      * Takes into account original metaclass of entity.
      *
-     * @param propertyPath entity attribute path
+     * @param metaPropertyPath entity attribute path
      */
-    boolean isEntityAttrReadPermitted(MetaPropertyPath propertyPath);
+    boolean isEntityAttrReadPermitted(MetaPropertyPath metaPropertyPath);
 
     /**
      * Check if current user can read an entity attribute which is the last part of the path given.

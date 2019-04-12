@@ -104,4 +104,12 @@ public class StandardUserSession extends UserSession {
         // Return true if no value set for this target, or if the value is more than requested
         return v == null || v >= value;
     }
+
+    public List<ConstraintData> getConstraints(String entityName) {
+        return Collections.unmodifiableList(constraints.getOrDefault(entityName, Collections.emptyList()));
+    }
+
+    public boolean hasConstraints() {
+        return !constraints.isEmpty();
+    }
 }
