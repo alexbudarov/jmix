@@ -20,32 +20,39 @@ import io.jmix.core.JmixCoreConfiguration
 import io.jmix.core.impl.ConfigStorage
 import io.jmix.data.JmixDataConfiguration
 import io.jmix.data.impl.ConfigStorageImpl
+import io.jmix.remoting.gateway.ConfigStorageService
 import io.jmix.remoting.test.JmixRemotingTestConfiguration
+import io.jmix.remoting.test.TestService
+import io.jmix.remoting.test.TestServiceImpl
 import org.springframework.context.ApplicationContext
 import org.springframework.test.context.ContextConfiguration
-import org.springframework.test.context.TestPropertySource
 import spock.lang.Specification
 
 import javax.inject.Inject
 
 @ContextConfiguration(classes = [JmixCoreConfiguration, JmixDataConfiguration, JmixRemotingConfiguration,
         JmixRemotingTestConfiguration])
-@TestPropertySource("classpath:/io/jmix/remoting/no-remoting.properties")
 class NoRemotingTest extends Specification {
 
-    @Inject
-    ConfigStorage configStorage
     @Inject
     ApplicationContext applicationContext
 
     def "context has correct beans"() {
+
+        def configStorage = applicationContext.getBean(ConfigStorage.NAME)
+        def testService = applicationContext.getBean(TestService.class)
+
         expect:
 
+        // direct implementation
         configStorage instanceof ConfigStorageImpl
+        testService instanceof TestServiceImpl
 
-        // todo when remoting is off, do not create transport beans
-//        !applicationContext.containsBean(ConfigStorageService.NAME)
+        // no transport beans
+        !applicationContext.containsBean(ConfigStorageService.NAME)
 
+        // no exports
         !applicationContext.containsBean('/remoting/' + ConfigStorageService.NAME)
+        !applicationContext.containsBean('/remoting/' + TestService.NAME)
     }
 }

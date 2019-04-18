@@ -16,7 +16,6 @@
 
 package io.jmix.remoting.impl;
 
-import com.google.common.base.Strings;
 import io.jmix.remoting.annotation.Remote;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +29,7 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.core.env.Environment;
+import org.springframework.core.env.Profiles;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.stereotype.Component;
 
@@ -40,25 +40,20 @@ public class RemotingBeanFactoryPostProcessor implements BeanFactoryPostProcesso
 
     private static final Logger log = LoggerFactory.getLogger(RemotingBeanFactoryPostProcessor.class);
 
-    protected boolean enabled;
-
-    protected String thisRole;
+    protected Environment environment;
 
     private static final String SERVER_URL = "http://localhost:8080"; // todo make configurable
 
     @Override
     public void setEnvironment(Environment environment) {
-        enabled = Boolean.parseBoolean(environment.getProperty("jmix.remoting.enabled"));
-        thisRole = environment.getProperty("jmix.remoting.role");
-        if (enabled && Strings.isNullOrEmpty(thisRole)) {
-            throw new IllegalStateException("Property " + "jmix.remoting.role" + " is not set");
-        }
+        this.environment = environment;
     }
 
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
-        BeanDefinitionRegistry registry = (BeanDefinitionRegistry) beanFactory;
-        processRemoteBeans(registry);
+        if (environment.acceptsProfiles(Profiles.of("remoting"))) {
+            processRemoteBeans((BeanDefinitionRegistry) beanFactory);
+        }
     }
 
     private void processRemoteBeans(BeanDefinitionRegistry registry) {
@@ -73,8 +68,8 @@ public class RemotingBeanFactoryPostProcessor implements BeanFactoryPostProcesso
                     }
                     Map<String, Object> annotationAttributes = metadata.getAnnotationAttributes(Remote.class.getName());
                     if (annotationAttributes != null) {
-                        String role = (String) annotationAttributes.get("role");
-                        if (role.equals(thisRole)) {
+                        String profile = (String) annotationAttributes.get("profile");
+                        if (inActiveProfiles(profile)) {
                             createServerEndpoint(registry, beanName, interfaceNames[0]);
                         } else {
                             createClientProxy(registry, beanName, interfaceNames[0]);
@@ -85,6 +80,10 @@ public class RemotingBeanFactoryPostProcessor implements BeanFactoryPostProcesso
                 }
             }
         }
+    }
+
+    protected boolean inActiveProfiles(String profile) {
+        return environment.acceptsProfiles(Profiles.of(profile));
     }
 
     private void createServerEndpoint(BeanDefinitionRegistry registry, String beanName, String interfaceName) {

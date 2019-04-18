@@ -14,16 +14,27 @@
  * limitations under the License.
  */
 
-package io.jmix.remoting.annotation;
+package io.jmix.samples.remoting.entity;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import io.jmix.core.entity.StandardEntity;
 
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface Remote {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
-    String profile();
+@Entity(name = "sample_Foo")
+@Table(name = "SAMPLE_FOO")
+public class Foo extends StandardEntity {
+    private static final long serialVersionUID = 4292400636649465650L;
+
+    @Column(name = "NAME")
+    private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

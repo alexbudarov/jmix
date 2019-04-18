@@ -16,21 +16,30 @@
 
 package io.jmix.remoting;
 
+import io.jmix.core.DataManager;
 import io.jmix.core.annotation.JmixComponent;
 import io.jmix.core.impl.ConfigStorage;
 import io.jmix.data.JmixDataConfiguration;
-import io.jmix.remoting.annotation.ConditionalOnRemotingRole;
+import io.jmix.remoting.gateway.ConfigStorageClient;
+import io.jmix.remoting.gateway.DataManagerClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 @Configuration
 @ComponentScan
 @JmixComponent(dependsOn = JmixDataConfiguration.class)
 public class JmixRemotingConfiguration {
 
+    @Bean(name = DataManager.NAME)
+    @Profile("client")
+    public DataManager dataManager() {
+        return new DataManagerClient();
+    }
+
     @Bean(name = ConfigStorage.NAME)
-    @ConditionalOnRemotingRole("client")
+    @Profile("client")
     public ConfigStorage configStorage() {
         return new ConfigStorageClient();
     }

@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package io.jmix.remoting;
+package io.jmix.remoting.gateway;
 
 import io.jmix.core.impl.ConfigStorage;
 import io.jmix.remoting.annotation.Remote;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Nullable;
@@ -25,7 +26,8 @@ import javax.inject.Inject;
 import java.util.Map;
 
 @Component(ConfigStorageService.NAME)
-@Remote(role = "server")
+@Profile("remoting")
+@Remote(profile = "server")
 public class ConfigStorageServiceImpl implements ConfigStorageService {
 
     @Inject

@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package io.jmix.remoting.annotation;
+package io.jmix.remoting.test;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import io.jmix.remoting.annotation.Remote;
+import org.springframework.stereotype.Component;
 
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface Remote {
-
-    String profile();
+@Component(TestService.NAME)
+@Remote(profile = "server")
+public class TestServiceImpl implements TestService {
+    @Override
+    public String echo(String input) {
+        return input;
+    }
 }

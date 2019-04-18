@@ -14,21 +14,9 @@
  * limitations under the License.
  */
 
-package io.jmix.remoting;
+package io.jmix.samples.remoting;
 
-import javax.annotation.Nullable;
-import java.util.Map;
+public interface EchoService {
 
-public interface ConfigStorageService {
-
-    String NAME = "jmix_ConfigStorageService";
-
-    Map<String, String> getDbProperties();
-
-    @Nullable
-    String getDbProperty(String name);
-
-    void setDbProperty(String name, String value);
-
-    void clearCache();
+    String echo(String input);
 }

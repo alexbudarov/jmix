@@ -20,33 +20,44 @@ import io.jmix.core.JmixCoreConfiguration
 import io.jmix.core.impl.ConfigStorage
 import io.jmix.data.JmixDataConfiguration
 import io.jmix.data.impl.ConfigStorageImpl
+import io.jmix.remoting.gateway.ConfigStorageService
+import io.jmix.remoting.gateway.ConfigStorageServiceImpl
 import io.jmix.remoting.impl.ServerEndpointExporter
 import io.jmix.remoting.test.JmixRemotingTestConfiguration
+import io.jmix.remoting.test.TestService
+import io.jmix.remoting.test.TestServiceImpl
 import org.springframework.context.ApplicationContext
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
-import org.springframework.test.context.TestPropertySource
 import spock.lang.Specification
 
 import javax.inject.Inject
 
 @ContextConfiguration(classes = [JmixCoreConfiguration, JmixDataConfiguration, JmixRemotingConfiguration,
         JmixRemotingTestConfiguration])
-@TestPropertySource("classpath:/io/jmix/remoting/server.properties")
+@ActiveProfiles(["remoting","server"])
 class ServerTest extends Specification {
 
-    @Inject
-    ConfigStorage configStorage
     @Inject
     ApplicationContext applicationContext
 
     def "context has correct beans"() {
+
+        def configStorage = applicationContext.getBean(ConfigStorage.NAME)
+        def configStorageService = applicationContext.getBean(ConfigStorageService.NAME)
+        def testService = applicationContext.getBean(TestService.class)
+
         expect:
 
+        // direct implementation
         configStorage instanceof ConfigStorageImpl
+        testService instanceof TestServiceImpl
 
-        applicationContext.containsBean(ConfigStorageService.NAME)
-        applicationContext.getBean(ConfigStorageService.NAME) instanceof ConfigStorageServiceImpl
+        // transport bean
+        configStorageService instanceof ConfigStorageServiceImpl
 
+        // export
         applicationContext.getBean('/remoting/' + ConfigStorageService.NAME) instanceof ServerEndpointExporter
+        applicationContext.getBean('/remoting/' + TestService.NAME) instanceof ServerEndpointExporter
     }
 }

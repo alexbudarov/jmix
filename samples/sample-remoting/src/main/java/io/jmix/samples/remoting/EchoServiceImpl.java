@@ -14,16 +14,22 @@
  * limitations under the License.
  */
 
-package io.jmix.remoting.annotation;
+package io.jmix.samples.remoting;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import io.jmix.remoting.annotation.Remote;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface Remote {
+@Component
+@Remote(profile = "server")
+public class EchoServiceImpl implements EchoService {
 
-    String profile();
+    private static final Logger log = LoggerFactory.getLogger(EchoServiceImpl.class);
+
+    @Override
+    public String echo(String input) {
+        log.info("Echo: " + input);
+        return input;
+    }
 }

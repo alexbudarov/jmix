@@ -14,37 +14,21 @@
  * limitations under the License.
  */
 
-package io.jmix.remoting;
-
-import io.jmix.core.impl.ConfigStorage;
+package io.jmix.remoting.gateway;
 
 import javax.annotation.Nullable;
-import javax.inject.Inject;
 import java.util.Map;
 
-public class ConfigStorageClient implements ConfigStorage {
+public interface ConfigStorageService {
 
-    @Inject
-    protected ConfigStorageService service;
+    String NAME = "jmix_ConfigStorageService";
 
-    @Override
-    public Map<String, String> getDbProperties() {
-        return service.getDbProperties();
-    }
+    Map<String, String> getDbProperties();
 
     @Nullable
-    @Override
-    public String getDbProperty(String name) {
-        return service.getDbProperty(name);
-    }
+    String getDbProperty(String name);
 
-    @Override
-    public void setDbProperty(String name, String value) {
-        service.setDbProperty(name, value);
-    }
+    void setDbProperty(String name, String value);
 
-    @Override
-    public void clearCache() {
-        service.clearCache();
-    }
+    void clearCache();
 }

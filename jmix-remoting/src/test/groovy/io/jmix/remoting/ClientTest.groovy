@@ -19,10 +19,13 @@ package io.jmix.remoting
 import io.jmix.core.JmixCoreConfiguration
 import io.jmix.core.impl.ConfigStorage
 import io.jmix.data.JmixDataConfiguration
+import io.jmix.remoting.gateway.ConfigStorageClient
+import io.jmix.remoting.gateway.ConfigStorageService
 import io.jmix.remoting.test.JmixRemotingTestConfiguration
+import io.jmix.remoting.test.TestService
 import org.springframework.context.ApplicationContext
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
-import org.springframework.test.context.TestPropertySource
 import spock.lang.Specification
 
 import javax.inject.Inject
@@ -30,22 +33,31 @@ import java.lang.reflect.Proxy
 
 @ContextConfiguration(classes = [JmixCoreConfiguration, JmixDataConfiguration, JmixRemotingConfiguration,
         JmixRemotingTestConfiguration])
-@TestPropertySource("classpath:/io/jmix/remoting/client.properties")
+@ActiveProfiles(["remoting", "client"])
 class ClientTest extends Specification {
 
-    @Inject
-    ConfigStorage configStorage
     @Inject
     ApplicationContext applicationContext
 
     def "context has correct beans"() {
+
+        def configStorage = applicationContext.getBean(ConfigStorage.NAME)
+        def configStorageService = applicationContext.getBean(ConfigStorageService.NAME)
+        def testService = applicationContext.getBean(TestService.class)
+
         expect:
 
+        // client implementation
         configStorage instanceof ConfigStorageClient
 
-        applicationContext.containsBean(ConfigStorageService.NAME)
-        applicationContext.getBean(ConfigStorageService.NAME) instanceof Proxy
+        // service proxy
+        testService instanceof Proxy
 
+        // transport proxy
+        configStorageService instanceof Proxy
+
+        // no exports
         !applicationContext.containsBean('/remoting/' + ConfigStorageService.NAME)
+        !applicationContext.containsBean('/remoting/' + TestService.NAME)
     }
 }

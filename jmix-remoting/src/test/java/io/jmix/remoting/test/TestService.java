@@ -14,16 +14,11 @@
  * limitations under the License.
  */
 
-package io.jmix.remoting.annotation;
+package io.jmix.remoting.test;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+public interface TestService {
 
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface Remote {
+    String NAME = "test_TestService";
 
-    String profile();
+    String echo(String input);
 }
