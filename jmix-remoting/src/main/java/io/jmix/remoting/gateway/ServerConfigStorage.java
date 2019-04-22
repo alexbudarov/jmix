@@ -14,16 +14,21 @@
  * limitations under the License.
  */
 
-package io.jmix.samples.customsecurity;
+package io.jmix.remoting.gateway;
 
-import io.jmix.core.security.UserSession;
-import org.springframework.security.core.Authentication;
+import javax.annotation.Nullable;
+import java.util.Map;
 
-public class CustomUserSession extends UserSession {
+public interface ServerConfigStorage {
 
-    private static final long serialVersionUID = -4481480396182663248L;
+    String NAME = "jmix_ConfigStorageService";
 
-    public CustomUserSession(Authentication authentication) {
-        super(authentication);
-    }
+    Map<String, String> getDbProperties();
+
+    @Nullable
+    String getDbProperty(String name);
+
+    void setDbProperty(String name, String value);
+
+    void clearCache();
 }

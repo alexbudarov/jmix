@@ -19,8 +19,8 @@ package io.jmix.remoting
 import io.jmix.core.JmixCoreConfiguration
 import io.jmix.core.impl.ConfigStorage
 import io.jmix.data.JmixDataConfiguration
-import io.jmix.remoting.gateway.ConfigStorageClient
-import io.jmix.remoting.gateway.ConfigStorageService
+import io.jmix.remoting.gateway.ClientConfigStorage
+import io.jmix.remoting.gateway.ServerConfigStorage
 import io.jmix.remoting.test.JmixRemotingTestConfiguration
 import io.jmix.remoting.test.TestService
 import org.springframework.context.ApplicationContext
@@ -42,13 +42,13 @@ class ClientTest extends Specification {
     def "context has correct beans"() {
 
         def configStorage = applicationContext.getBean(ConfigStorage.NAME)
-        def configStorageService = applicationContext.getBean(ConfigStorageService.NAME)
+        def configStorageService = applicationContext.getBean(ServerConfigStorage.NAME)
         def testService = applicationContext.getBean(TestService.class)
 
         expect:
 
         // client implementation
-        configStorage instanceof ConfigStorageClient
+        configStorage instanceof ClientConfigStorage
 
         // service proxy
         testService instanceof Proxy
@@ -57,7 +57,7 @@ class ClientTest extends Specification {
         configStorageService instanceof Proxy
 
         // no exports
-        !applicationContext.containsBean('/remoting/' + ConfigStorageService.NAME)
+        !applicationContext.containsBean('/remoting/' + ServerConfigStorage.NAME)
         !applicationContext.containsBean('/remoting/' + TestService.NAME)
     }
 }

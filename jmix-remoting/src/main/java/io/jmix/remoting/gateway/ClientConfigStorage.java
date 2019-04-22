@@ -14,28 +14,37 @@
  * limitations under the License.
  */
 
-package io.jmix.samples.remoting;
+package io.jmix.remoting.gateway;
 
-import io.jmix.core.security.UserSessionSource;
-import io.jmix.remoting.annotation.Remote;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
+import io.jmix.core.impl.ConfigStorage;
 
+import javax.annotation.Nullable;
 import javax.inject.Inject;
+import java.util.Map;
 
-@Component
-@Remote
-public class EchoServiceImpl implements EchoService {
-
-    private static final Logger log = LoggerFactory.getLogger(EchoServiceImpl.class);
+public class ClientConfigStorage implements ConfigStorage {
 
     @Inject
-    private UserSessionSource userSessionSource;
+    protected ServerConfigStorage service;
 
     @Override
-    public String echo(String input) {
-        log.info("Echo: " + input + ", session: " + userSessionSource.getUserSession());
-        return input;
+    public Map<String, String> getDbProperties() {
+        return service.getDbProperties();
+    }
+
+    @Nullable
+    @Override
+    public String getDbProperty(String name) {
+        return service.getDbProperty(name);
+    }
+
+    @Override
+    public void setDbProperty(String name, String value) {
+        service.setDbProperty(name, value);
+    }
+
+    @Override
+    public void clearCache() {
+        service.clearCache();
     }
 }

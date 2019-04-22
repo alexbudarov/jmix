@@ -13,30 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.jmix.remoting.gateway;
 
-import io.jmix.core.CommitContext;
-import io.jmix.core.LoadContext;
-import io.jmix.core.ValueLoadContext;
-import io.jmix.core.entity.Entity;
-import io.jmix.core.entity.KeyValueEntity;
+package io.jmix.core.security.impl;
+
+import io.jmix.core.security.UserSession;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Nullable;
-import java.util.List;
-import java.util.Set;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
-public interface DataManagerService {
+@Component(SystemSessions.NAME)
+public class SystemSessions {
 
-    String NAME = "jmix_DataManagerService";
+    public static final String NAME = "jmix_SystemSessions";
 
-    Set<Entity> commit(CommitContext context);
+    protected Map<String, UserSession> sessions = new ConcurrentHashMap<>();
 
     @Nullable
-    <E extends Entity> E load(LoadContext<E> context);
+    public UserSession get(String login) {
+        return sessions.get(login);
+    }
 
-    <E extends Entity> List<E> loadList(LoadContext<E> context);
-
-    long getCount(LoadContext<? extends Entity> context);
-
-    List<KeyValueEntity> loadValues(ValueLoadContext context);
+    public void put(String login, UserSession userSession) {
+        sessions.put(login, userSession);
+    }
 }

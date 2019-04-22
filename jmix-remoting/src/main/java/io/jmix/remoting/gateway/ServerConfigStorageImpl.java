@@ -25,10 +25,10 @@ import javax.annotation.Nullable;
 import javax.inject.Inject;
 import java.util.Map;
 
-@Component(ConfigStorageService.NAME)
+@Component(ServerConfigStorage.NAME)
 @Profile("remoting")
-@Remote(profile = "server")
-public class ConfigStorageServiceImpl implements ConfigStorageService {
+@Remote
+public class ServerConfigStorageImpl implements ServerConfigStorage {
 
     @Inject
     protected ConfigStorage configStorage;

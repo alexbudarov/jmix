@@ -16,32 +16,26 @@
 
 package io.jmix.samples.remoting;
 
-import io.jmix.core.DataManager;
-import io.jmix.samples.remoting.entity.Foo;
+import io.jmix.core.security.UserSession;
+import io.jmix.core.security.UserSessionManager;
 import org.springframework.context.annotation.Profile;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
-import java.time.LocalDateTime;
-import java.util.List;
 
 @RestController
-@RequestMapping("foo")
 @Profile("!remoting || client")
-public class FooController {
+public class LoginController {
 
     @Inject
-    private DataManager dataManager;
+    UserSessionManager userSessionManager;
 
-    @PostMapping(path = "/create", produces = "application/json")
-    Foo createFoo() {
-        Foo foo = dataManager.create(Foo.class);
-        foo.setName("Foo-" + LocalDateTime.now().toString());
-        return dataManager.commit(foo);
-    }
-
-    @GetMapping(path = "/all", produces = "application/json")
-    List<Foo> getAll() {
-        return dataManager.load(Foo.class).list();
+    @PostMapping("/login")
+    String login(@RequestParam String username, @RequestParam String password) {
+        UserSession session = userSessionManager.createSession(new UsernamePasswordAuthenticationToken(username, password));
+        return session.getId().toString();
     }
 }

@@ -14,16 +14,22 @@
  * limitations under the License.
  */
 
-package io.jmix.remoting.test;
+package io.jmix.core.security;
 
-import io.jmix.remoting.annotation.Remote;
+import io.jmix.core.compatibility.AppContext;
 import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-@Component(TestService.NAME)
-@Remote
-public class TestServiceImpl implements TestService {
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@Component(UserSessionCleanupInterceptor.NAME)
+public class UserSessionCleanupInterceptor extends HandlerInterceptorAdapter {
+
+    public static final String NAME = "jmix_UserSessionCleanupInterceptor";
+
     @Override
-    public String echo(String input) {
-        return input;
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+        AppContext.setSecurityContext(null);
     }
 }

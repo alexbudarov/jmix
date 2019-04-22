@@ -16,19 +16,12 @@
 
 package io.jmix.remoting.gateway;
 
-import javax.annotation.Nullable;
-import java.util.Map;
+import io.jmix.core.security.UserSession;
+import org.springframework.security.core.Authentication;
 
-public interface ConfigStorageService {
+public interface ServerUserSessionManager {
 
-    String NAME = "jmix_ConfigStorageService";
+    String NAME = "jmix_UserSessionManagerService";
 
-    Map<String, String> getDbProperties();
-
-    @Nullable
-    String getDbProperty(String name);
-
-    void setDbProperty(String name, String value);
-
-    void clearCache();
+    UserSession createSession(Authentication authToken);
 }

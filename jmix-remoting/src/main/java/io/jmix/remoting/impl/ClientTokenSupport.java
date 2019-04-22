@@ -14,37 +14,32 @@
  * limitations under the License.
  */
 
-package io.jmix.remoting.gateway;
+package io.jmix.remoting.impl;
 
-import io.jmix.core.impl.ConfigStorage;
+import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Nullable;
 import javax.inject.Inject;
-import java.util.Map;
 
-public class ConfigStorageClient implements ConfigStorage {
+@Component(ClientTokenSupport.NAME)
+public class ClientTokenSupport {
+
+    public static final String NAME = "jmix_ClientTokenSupport";
 
     @Inject
-    protected ConfigStorageService service;
-
-    @Override
-    public Map<String, String> getDbProperties() {
-        return service.getDbProperties();
-    }
+    protected Environment environment;
 
     @Nullable
-    @Override
-    public String getDbProperty(String name) {
-        return service.getDbProperty(name);
+    public String current() {
+        return environment.getProperty("jmix.clientToken");
     }
 
-    @Override
-    public void setDbProperty(String name, String value) {
-        service.setDbProperty(name, value);
-    }
-
-    @Override
-    public void clearCache() {
-        service.clearCache();
+    public boolean matches(String clientToken) {
+        String clientTokenProp = environment.getProperty("jmix.clientToken");
+        if (clientTokenProp == null) {
+            return false;
+        }
+        return clientTokenProp.equals(clientToken);
     }
 }

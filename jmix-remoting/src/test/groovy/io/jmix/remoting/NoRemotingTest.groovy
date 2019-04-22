@@ -20,7 +20,7 @@ import io.jmix.core.JmixCoreConfiguration
 import io.jmix.core.impl.ConfigStorage
 import io.jmix.data.JmixDataConfiguration
 import io.jmix.data.impl.ConfigStorageImpl
-import io.jmix.remoting.gateway.ConfigStorageService
+import io.jmix.remoting.gateway.ServerConfigStorage
 import io.jmix.remoting.test.JmixRemotingTestConfiguration
 import io.jmix.remoting.test.TestService
 import io.jmix.remoting.test.TestServiceImpl
@@ -49,10 +49,10 @@ class NoRemotingTest extends Specification {
         testService instanceof TestServiceImpl
 
         // no transport beans
-        !applicationContext.containsBean(ConfigStorageService.NAME)
+        !applicationContext.containsBean(ServerConfigStorage.NAME)
 
         // no exports
-        !applicationContext.containsBean('/remoting/' + ConfigStorageService.NAME)
+        !applicationContext.containsBean('/remoting/' + ServerConfigStorage.NAME)
         !applicationContext.containsBean('/remoting/' + TestService.NAME)
     }
 }

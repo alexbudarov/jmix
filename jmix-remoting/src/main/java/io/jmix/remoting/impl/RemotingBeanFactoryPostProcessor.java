@@ -42,7 +42,7 @@ public class RemotingBeanFactoryPostProcessor implements BeanFactoryPostProcesso
 
     protected Environment environment;
 
-    private static final String SERVER_URL = "http://localhost:8080"; // todo make configurable
+    private static final String SERVER_URL = "http://localhost:8080"; // todo remoting configuration
 
     @Override
     public void setEnvironment(Environment environment) {
@@ -97,11 +97,11 @@ public class RemotingBeanFactoryPostProcessor implements BeanFactoryPostProcesso
 
     private void createClientProxy(BeanDefinitionRegistry registry, String beanName, String interfaceName) {
         BeanDefinition definition = new RootBeanDefinition(ClientProxyFactoryBean.class);
-//        definition.getConstructorArgumentValues().addIndexedArgumentValue(0, serverSelector);
         MutablePropertyValues propertyValues = definition.getPropertyValues();
         String servicePath = "/remoting/" + beanName;
         propertyValues.add("serviceUrl", SERVER_URL + servicePath);
         propertyValues.add("serviceInterface", interfaceName);
+        propertyValues.add("httpInvokerRequestExecutorBeanName", ClientRequestExecutor.NAME);
         registry.registerBeanDefinition(beanName, definition);
 
         log.debug("Configured remote proxy bean " + beanName + " of type " + interfaceName + ", bound to " + servicePath);

@@ -24,10 +24,10 @@ import javax.annotation.Nullable;
 import javax.inject.Inject;
 import java.util.List;
 
-public class DataManagerClient extends DataManagerSupport implements DataManager {
+public class ClientDataManager extends DataManagerSupport implements DataManager {
 
     @Inject
-    protected DataManagerService service;
+    protected ServerDataManager service;
 
     @Nullable
     @Override

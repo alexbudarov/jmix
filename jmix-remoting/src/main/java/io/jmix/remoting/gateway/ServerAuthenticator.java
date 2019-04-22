@@ -14,16 +14,13 @@
  * limitations under the License.
  */
 
-package io.jmix.samples.customsecurity;
+package io.jmix.remoting.gateway;
 
 import io.jmix.core.security.UserSession;
-import org.springframework.security.core.Authentication;
 
-public class CustomUserSession extends UserSession {
+public interface ServerAuthenticator {
 
-    private static final long serialVersionUID = -4481480396182663248L;
+    String NAME = "jmix_ServerAuthenticator";
 
-    public CustomUserSession(Authentication authentication) {
-        super(authentication);
-    }
+    UserSession authenticateByClientToken(String login, String clientToken);
 }

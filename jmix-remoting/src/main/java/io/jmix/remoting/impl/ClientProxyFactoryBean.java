@@ -16,7 +16,19 @@
 
 package io.jmix.remoting.impl;
 
+import org.springframework.context.ApplicationContext;
 import org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean;
+import org.springframework.remoting.httpinvoker.HttpInvokerRequestExecutor;
+
+import javax.inject.Inject;
 
 public class ClientProxyFactoryBean extends HttpInvokerProxyFactoryBean {
+
+    @Inject
+    protected ApplicationContext applicationContext;
+
+    public void setHttpInvokerRequestExecutorBeanName(String beanName) {
+        setHttpInvokerRequestExecutor((HttpInvokerRequestExecutor) applicationContext.getBean(beanName));
+    }
+
 }

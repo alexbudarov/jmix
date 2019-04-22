@@ -23,17 +23,17 @@ import io.jmix.core.entity.Entity;
 import io.jmix.core.entity.KeyValueEntity;
 import io.jmix.remoting.annotation.Remote;
 import org.springframework.context.annotation.Profile;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import java.util.List;
 import java.util.Set;
 
-@Service(DataManagerService.NAME)
+@Component(ServerDataManager.NAME)
 @Profile("remoting")
-@Remote(profile = "server")
-public class DataManagerServiceImpl implements DataManagerService {
+@Remote
+public class ServerDataManagerImpl implements ServerDataManager {
 
     @Inject
     protected DataManager dataManager;

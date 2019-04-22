@@ -21,9 +21,18 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * When added to a bean implementation, results in the following:
+ * <ul>
+ *     <li>If an active profile matches the one specified in {@link #profile()} attribute ("server" by default),
+ *          the framework exports the bean as HttpInvoker endpoint.
+ *     <li>If no active profiles match, the framework creates a client proxy for invoking the remote bean via HttpInvoker.
+ * </ul>
+ * The annotation takes effect only if the "remoting" profile is also active.
+ */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Remote {
 
-    String profile();
+    String profile() default "server";
 }

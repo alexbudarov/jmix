@@ -14,16 +14,10 @@
  * limitations under the License.
  */
 
-package io.jmix.samples.customsecurity;
+package io.jmix.core.security;
 
-import io.jmix.core.security.UserSession;
-import org.springframework.security.core.Authentication;
-
-public class CustomUserSession extends UserSession {
-
-    private static final long serialVersionUID = -4481480396182663248L;
-
-    public CustomUserSession(Authentication authentication) {
-        super(authentication);
-    }
+/**
+ * Marker interface of a built-in system {@code UserSession}.
+ */
+public interface SystemUserSession {
 }
