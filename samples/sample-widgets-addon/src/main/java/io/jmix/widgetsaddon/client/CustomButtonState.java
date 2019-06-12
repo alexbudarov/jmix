@@ -14,21 +14,11 @@
  * limitations under the License.
  */
 
-import io.jmix.gradle.ui.ThemeCompile
+package io.jmix.widgetsaddon.client;
 
-apply plugin: 'java'
+import com.vaadin.shared.ui.button.ButtonState;
 
-def jmixUi = rootProject.project(':jmix-ui')
+public class CustomButtonState extends ButtonState {
 
-configurations {
-    themes
-}
-
-dependencies {
-    implementation "com.vaadin:vaadin-themes:$jmixUi.vaadinVersion"
-    themes "com.vaadin:vaadin-themes:$jmixUi.vaadinVersion"
-}
-
-task compileThemes(type: ThemeCompile) {
-    scssDir = 'src/main/resources'
+    public String color = "";
 }
