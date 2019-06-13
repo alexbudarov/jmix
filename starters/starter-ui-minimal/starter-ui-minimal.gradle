@@ -17,5 +17,5 @@ dependencies {
     api project(':jmix-security')
     api project(':jmix-ui')
 
-    implementation 'com.vaadin:vaadin-spring-boot:3.1.1'
+    api 'org.springframework.boot:spring-boot-autoconfigure'
 }

@@ -297,7 +297,7 @@ public class ThemeCompile extends DefaultTask {
         }
     }
 
-    void buildTheme(String themeDirName, File stylesDirectory, File vaadinThemesRoot) throws FileNotFoundException {
+    protected void buildTheme(String themeDirName, File stylesDirectory, File vaadinThemesRoot) throws FileNotFoundException {
         getLogger().info("[ThemeCompile] build theme '{}'", themeDirName);
 
         File themeDir = new File(stylesDirectory, themeDirName);

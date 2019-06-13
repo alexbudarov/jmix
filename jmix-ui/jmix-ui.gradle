@@ -41,7 +41,10 @@ dependencies {
     api 'com.vaadin:vaadin-spring:3.1.1'
 
     api 'org.perf4j:perf4j:0.9.16'
-    
+
+    api 'org.springframework:spring-websocket'
+    api 'org.springframework.boot:spring-boot-autoconfigure'
+
     testImplementation 'org.springframework:spring-test'
     testImplementation "org.spockframework:spock-core:$rootProject.spockVersion"
     testImplementation "org.spockframework:spock-spring:$rootProject.spockVersion"

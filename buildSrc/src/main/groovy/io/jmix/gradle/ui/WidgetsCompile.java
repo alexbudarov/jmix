@@ -102,9 +102,11 @@ public class WidgetsCompile extends WidgetsTask {
             }
         }
 
-        File widgetSetsDirectory = new File(widgetSetsDir);
+        File widgetSetsDirectory = new File(widgetSetsDir, "VAADIN/widgetsets");
         if (widgetSetsDirectory.exists()) {
             deleteQuietly(widgetSetsDirectory);
+        } else {
+            widgetSetsDirectory.mkdirs();
         }
 
         // strip gwt-unitCache
@@ -274,7 +276,7 @@ public class WidgetsCompile extends WidgetsTask {
     }
 
     protected String getDefaultBuildDir() {
-        return new File(getProject().getBuildDir(), "web/VAADIN/widgetsets").getAbsolutePath();
+        return new File(getProject().getBuildDir(), "web").getAbsolutePath();
     }
 
     protected List<File> collectClassPathEntries() {

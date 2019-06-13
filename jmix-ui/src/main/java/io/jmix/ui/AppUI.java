@@ -55,7 +55,7 @@ import javax.inject.Inject;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Widgetset("io.jmix.ui.widgets.WidgetSet")
+@Widgetset("${cuba.web.widgetSet:io.jmix.ui.widgets.WidgetSet}")
 @Theme("${cuba.web.theme:halo}")
 @Push(transport = Transport.WEBSOCKET_XHR)
 @SpringUI
