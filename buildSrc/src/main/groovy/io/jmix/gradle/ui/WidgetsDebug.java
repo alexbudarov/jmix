@@ -66,6 +66,7 @@ public class WidgetsDebug extends WidgetsTask {
         if (widgetSetsDirectory.exists()) {
             FileUtils.deleteQuietly(widgetSetsDirectory);
         }
+        //noinspection ResultOfMethodCallIgnored
         widgetSetsDirectory.mkdir();
 
         List<File> compilerClassPath = collectClassPathEntries();

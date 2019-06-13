@@ -86,7 +86,7 @@ public class ThemeCompile extends DefaultTask {
     @OutputDirectory
     public File getOutputDirectory() {
         if (destDir == null) {
-            return new File(getProject().getBuildDir(), "web");
+            return new File(getProject().getBuildDir(), "themes");
         }
         return new File(getProject().getProjectDir(), destDir);
     }
@@ -152,9 +152,11 @@ public class ThemeCompile extends DefaultTask {
                     stylesDirectory.getAbsolutePath()));
         }
 
-        File themesTmp = new File(getProject().getBuildDir(), "themes-tmp");
+        File themesTmp = new File(getProject().getBuildDir(), "tmp/themes");
         if (themesTmp.exists()) {
             deleteDirectory(themesTmp);
+        } else {
+            forceMkdirParent(themesTmp);
         }
         forceMkdir(themesTmp);
 

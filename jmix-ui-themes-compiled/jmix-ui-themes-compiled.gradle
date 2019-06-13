@@ -19,6 +19,6 @@ import io.jmix.gradle.JmixPlugin
 apply plugin: 'java'
 
 def uiThemes = project(':jmix-ui-themes')
-def inputDir = new File(uiThemes.buildDir, 'web')
+def inputDir = new File(uiThemes.buildDir, 'themes')
 
 sourceSets.main.output.dir(inputDir, builtBy: uiThemes.tasks.getByName(JmixPlugin.COMPILE_THEMES_TASK_NAME))

@@ -19,6 +19,6 @@ import io.jmix.gradle.JmixPlugin
 apply plugin: 'java'
 
 def uiWidgets = project(':jmix-ui-widgets')
-def inputDir = new File(uiWidgets.buildDir, 'web')
+def inputDir = new File(uiWidgets.buildDir, 'widgets')
 
 sourceSets.main.output.dir(inputDir, builtBy: uiWidgets.tasks.getByName(JmixPlugin.COMPILE_WIDGETS_TASK_NAME))

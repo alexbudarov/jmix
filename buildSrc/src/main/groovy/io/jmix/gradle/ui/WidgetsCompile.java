@@ -110,8 +110,9 @@ public class WidgetsCompile extends WidgetsTask {
         }
 
         // strip gwt-unitCache
-        File gwtTemp = getProject().file("build/gwt");
+        File gwtTemp = getProject().file("build/tmp/gwt");
         if (!gwtTemp.exists()) {
+            gwtTemp.mkdirs();
             gwtTemp.mkdir();
         }
 
@@ -144,7 +145,6 @@ public class WidgetsCompile extends WidgetsTask {
         gwtWidgetSetTemp.renameTo(widgetSetsDirectory);
     }
 
-    @SuppressWarnings("ResultOfMethodCallIgnored")
     protected void generateWidgetSetXml(List<File> compilerClassPath, File gwtTemp, String widgetSetClass) {
         StringBuilder gwtXmlBuilder = new StringBuilder();
         gwtXmlBuilder.append("<module>\n");
@@ -200,6 +200,7 @@ public class WidgetsCompile extends WidgetsTask {
             File parentDir = file.getParentFile();
             // generate package structure
             if (!parentDir.exists()) {
+                //noinspection ResultOfMethodCallIgnored
                 parentDir.mkdirs();
             }
 
@@ -276,7 +277,7 @@ public class WidgetsCompile extends WidgetsTask {
     }
 
     protected String getDefaultBuildDir() {
-        return new File(getProject().getBuildDir(), "web").getAbsolutePath();
+        return new File(getProject().getBuildDir(), "widgets").getAbsolutePath();
     }
 
     protected List<File> collectClassPathEntries() {
