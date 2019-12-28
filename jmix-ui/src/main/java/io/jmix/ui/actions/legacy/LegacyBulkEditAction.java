@@ -167,7 +167,7 @@ public class LegacyBulkEditAction extends ItemTrackingAction implements Action.H
 
             Notifications notifications = getScreenContext(target.getFrame()).getNotifications();
             notifications.create(NotificationType.ERROR)
-                    .withCaption(messages.getMainMessage("accessDenied.message"))
+                    .withCaption(messages.getMessage("accessDenied.message"))
                     .show();
             return;
         }
@@ -177,7 +177,7 @@ public class LegacyBulkEditAction extends ItemTrackingAction implements Action.H
 
             Notifications notifications = getScreenContext(target.getFrame()).getNotifications();
             notifications.create(NotificationType.HUMANIZED)
-                    .withCaption(messages.getMainMessage("actions.BulkEdit.emptySelection"))
+                    .withCaption(messages.getMessage("actions.BulkEdit.emptySelection"))
                     .show();
 
             return;

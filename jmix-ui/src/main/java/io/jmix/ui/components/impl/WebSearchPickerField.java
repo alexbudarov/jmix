@@ -112,7 +112,7 @@ public class WebSearchPickerField<V extends Entity> extends WebPickerField<V>
     @Override
     protected void initComponent(CubaPickerField<V> component) {
         Messages messages = beanLocator.get(Messages.NAME);
-        setInputPrompt(messages.getMainMessage("searchPickerField.inputPrompt"));
+        setInputPrompt(messages.getMessage("searchPickerField.inputPrompt"));
 
         getComponent().setItemCaptionGenerator(this::generateItemCaption);
         getComponent().setFilterHandler(this::executeSearch);

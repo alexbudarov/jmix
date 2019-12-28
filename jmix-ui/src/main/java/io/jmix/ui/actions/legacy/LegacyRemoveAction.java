@@ -297,7 +297,7 @@ public class LegacyRemoveAction extends ItemTrackingAction
             return confirmationMessage;
         else {
             Messages messages = AppBeans.get(Messages.NAME);
-            return messages.getMainMessage("dialogs.Confirmation.Remove");
+            return messages.getMessage("dialogs.Confirmation.Remove");
         }
     }
 
@@ -317,7 +317,7 @@ public class LegacyRemoveAction extends ItemTrackingAction
             return confirmationTitle;
         else {
             Messages messages = AppBeans.get(Messages.NAME);
-            return messages.getMainMessage("dialogs.Confirmation");
+            return messages.getMessage("dialogs.Confirmation");
         }
     }
 

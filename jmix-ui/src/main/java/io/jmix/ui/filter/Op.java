@@ -75,7 +75,7 @@ public enum Op implements EnumClass<String> {
     }
 
     public String getLocCaption() {
-        return AppBeans.get(Messages.class).getMainMessage("Op." + this.name());
+        return AppBeans.get(Messages.class).getMessage("Op." + this.name());
     }
 
     @Override

@@ -166,7 +166,7 @@ public class LegacyAddAction extends ListAction
         this.openType = openType;
 
         Messages messages = AppBeans.get(Messages.NAME);
-        this.caption = messages.getMainMessage("actions.Add");
+        this.caption = messages.getMessage("io.jmix.ui.actions.list/actions.Add");
 
         this.icon = AppBeans.get(Icons.class).get(CubaIcon.ADD_ACTION);
 
