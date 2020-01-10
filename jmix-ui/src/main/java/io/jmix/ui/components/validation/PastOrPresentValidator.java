@@ -101,7 +101,7 @@ public class PastOrPresentValidator<T> extends AbstractValidator<T> {
         if (!timeConstraint.isPastOrPresent()) {
             String message = getMessage();
             if (message == null) {
-                message = messages.getMessage(getClass(), "validation.constraints.pastOrPresent");
+                message = messages.getMessage("validation.constraints.pastOrPresent");
             }
 
             throw new ValidationException(message);

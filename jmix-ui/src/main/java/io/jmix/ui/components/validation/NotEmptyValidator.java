@@ -73,7 +73,7 @@ public class NotEmptyValidator<T> extends AbstractValidator<T> {
                 || (value instanceof String) && ((String) value).isEmpty()) {
             String message = getMessage();
             if (message == null) {
-                message = messages.getMessage(getClass(), "validation.constraints.notEmpty");
+                message = messages.getMessage("validation.constraints.notEmpty");
             }
 
             throw new ValidationException(message);

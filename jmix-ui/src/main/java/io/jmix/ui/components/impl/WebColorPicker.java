@@ -60,22 +60,22 @@ public class WebColorPicker extends WebV8AbstractField<CubaColorPickerWrapper, C
     }
 
     protected void setCaptions(Messages messages) {
-        component.setPopupCaption(messages.getMessage(getClass(), "colorPicker.popupCaption"));
-        component.setSwatchesTabCaption(messages.getMessage(getClass(), "colorPicker.swatchesTabCaption"));
-        component.setConfirmButtonCaption(messages.getMessage(getClass(), "colorPicker.confirmButtonCaption"));
-        component.setCancelButtonCaption(messages.getMessage(getClass(), "colorPicker.cancelButtonCaption"));
+        component.setPopupCaption(messages.getMessage("colorPicker.popupCaption"));
+        component.setSwatchesTabCaption(messages.getMessage("colorPicker.swatchesTabCaption"));
+        component.setConfirmButtonCaption(messages.getMessage("colorPicker.confirmButtonCaption"));
+        component.setCancelButtonCaption(messages.getMessage("colorPicker.cancelButtonCaption"));
 
-        component.setLookupAllCaption(messages.getMessage(getClass(), "colorPicker.lookupAll"));
-        component.setLookupRedCaption(messages.getMessage(getClass(), "colorPicker.lookupRed"));
-        component.setLookupGreenCaption(messages.getMessage(getClass(), "colorPicker.lookupGreen"));
-        component.setLookupBlueCaption(messages.getMessage(getClass(), "colorPicker.lookupBlue"));
+        component.setLookupAllCaption(messages.getMessage("colorPicker.lookupAll"));
+        component.setLookupRedCaption(messages.getMessage("colorPicker.lookupRed"));
+        component.setLookupGreenCaption(messages.getMessage("colorPicker.lookupGreen"));
+        component.setLookupBlueCaption(messages.getMessage("colorPicker.lookupBlue"));
 
-        component.setRedSliderCaption(messages.getMessage(getClass(), "colorPicker.redSliderCaption"));
-        component.setGreenSliderCaption(messages.getMessage(getClass(), "colorPicker.greenSliderCaption"));
-        component.setBlueSliderCaption(messages.getMessage(getClass(), "colorPicker.blueSliderCaption"));
-        component.setHueSliderCaption(messages.getMessage(getClass(), "colorPicker.hueSliderCaption"));
-        component.setSaturationSliderCaption(messages.getMessage(getClass(), "colorPicker.saturationSliderCaption"));
-        component.setValueSliderCaption(messages.getMessage(getClass(), "colorPicker.valueSliderCaption"));
+        component.setRedSliderCaption(messages.getMessage("colorPicker.redSliderCaption"));
+        component.setGreenSliderCaption(messages.getMessage("colorPicker.greenSliderCaption"));
+        component.setBlueSliderCaption(messages.getMessage("colorPicker.blueSliderCaption"));
+        component.setHueSliderCaption(messages.getMessage("colorPicker.hueSliderCaption"));
+        component.setSaturationSliderCaption(messages.getMessage("colorPicker.saturationSliderCaption"));
+        component.setValueSliderCaption(messages.getMessage("colorPicker.valueSliderCaption"));
     }
 
     @Override

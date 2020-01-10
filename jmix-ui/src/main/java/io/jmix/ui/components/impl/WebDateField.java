@@ -289,7 +289,7 @@ public class WebDateField<V extends Comparable<V>>
             Notifications notifications = ComponentsHelper.getScreenContext(this).getNotifications();
 
             notifications.create()
-                    .withCaption(messages.getMessage(getClass(), "datePicker.dateOutOfRangeMessage"))
+                    .withCaption(messages.getMessage("datePicker.dateOutOfRangeMessage"))
                     .withType(Notifications.NotificationType.TRAY)
                     .show();
         }
@@ -676,7 +676,7 @@ public class WebDateField<V extends Comparable<V>>
         if (!checkRange(value, false)) {
             LoggerFactory.getLogger(WebDateField.class)
                     .trace("DateField value is out of range");
-            String dateOutOfRangeMessage = messages.getMessage(getClass(), "datePicker.dateOutOfRangeMessage");
+            String dateOutOfRangeMessage = messages.getMessage("datePicker.dateOutOfRangeMessage");
             setValidationError(dateOutOfRangeMessage);
             throw new ValidationException(dateOutOfRangeMessage);
         }

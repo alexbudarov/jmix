@@ -64,37 +64,37 @@ public class WebCalendar extends WebAbstractComponent<CubaCalendar>
     protected void initComponent(CubaCalendar component) {
         Messages messages = beanLocator.get(Messages.NAME);
         String[] monthNamesShort = new String[12];
-        monthNamesShort[0] = messages.getMessage(getClass(), "calendar.januaryCaption");
-        monthNamesShort[1] = messages.getMessage(getClass(), "calendar.februaryCaption");
-        monthNamesShort[2] = messages.getMessage(getClass(), "calendar.marchCaption");
-        monthNamesShort[3] = messages.getMessage(getClass(), "calendar.aprilCaption");
-        monthNamesShort[4] = messages.getMessage(getClass(), "calendar.mayCaption");
-        monthNamesShort[5] = messages.getMessage(getClass(), "calendar.juneCaption");
-        monthNamesShort[6] = messages.getMessage(getClass(), "calendar.julyCaption");
-        monthNamesShort[7] = messages.getMessage(getClass(), "calendar.augustCaption");
-        monthNamesShort[8] = messages.getMessage(getClass(), "calendar.septemberCaption");
-        monthNamesShort[9] = messages.getMessage(getClass(), "calendar.octoberCaption");
-        monthNamesShort[10] = messages.getMessage(getClass(), "calendar.novemberCaption");
-        monthNamesShort[11] = messages.getMessage(getClass(), "calendar.decemberCaption");
+        monthNamesShort[0] = messages.getMessage("calendar.januaryCaption");
+        monthNamesShort[1] = messages.getMessage("calendar.februaryCaption");
+        monthNamesShort[2] = messages.getMessage("calendar.marchCaption");
+        monthNamesShort[3] = messages.getMessage("calendar.aprilCaption");
+        monthNamesShort[4] = messages.getMessage("calendar.mayCaption");
+        monthNamesShort[5] = messages.getMessage("calendar.juneCaption");
+        monthNamesShort[6] = messages.getMessage("calendar.julyCaption");
+        monthNamesShort[7] = messages.getMessage("calendar.augustCaption");
+        monthNamesShort[8] = messages.getMessage("calendar.septemberCaption");
+        monthNamesShort[9] = messages.getMessage("calendar.octoberCaption");
+        monthNamesShort[10] = messages.getMessage("calendar.novemberCaption");
+        monthNamesShort[11] = messages.getMessage("calendar.decemberCaption");
         component.setMonthNamesShort(monthNamesShort);
 
         String[] dayNamesShort = new String[7];
-        dayNamesShort[0] = messages.getMessage(getClass(), "calendar.sundayCaption");
-        dayNamesShort[1] = messages.getMessage(getClass(), "calendar.mondayCaption");
-        dayNamesShort[2] = messages.getMessage(getClass(), "calendar.tuesdayCaption");
-        dayNamesShort[3] = messages.getMessage(getClass(), "calendar.wednesdayCaption");
-        dayNamesShort[4] = messages.getMessage(getClass(), "calendar.thursdayCaption");
-        dayNamesShort[5] = messages.getMessage(getClass(), "calendar.fridayCaption");
-        dayNamesShort[6] = messages.getMessage(getClass(), "calendar.saturdayCaption");
+        dayNamesShort[0] = messages.getMessage("calendar.sundayCaption");
+        dayNamesShort[1] = messages.getMessage("calendar.mondayCaption");
+        dayNamesShort[2] = messages.getMessage("calendar.tuesdayCaption");
+        dayNamesShort[3] = messages.getMessage("calendar.wednesdayCaption");
+        dayNamesShort[4] = messages.getMessage("calendar.thursdayCaption");
+        dayNamesShort[5] = messages.getMessage("calendar.fridayCaption");
+        dayNamesShort[6] = messages.getMessage("calendar.saturdayCaption");
         component.setDayNamesShort(dayNamesShort);
 
-        if (TIME_FORMAT_12H.equals(messages.getMessage(getClass(), "calendar.timeFormat"))) {
+        if (TIME_FORMAT_12H.equals(messages.getMessage("calendar.timeFormat"))) {
             setTimeFormat(TimeFormat.FORMAT_12H);
-        } else if (TIME_FORMAT_24H.equals(messages.getMessage(getClass(), "calendar.timeFormat"))) {
+        } else if (TIME_FORMAT_24H.equals(messages.getMessage("calendar.timeFormat"))) {
             setTimeFormat(TimeFormat.FORMAT_24H);
         } else {
             throw new IllegalStateException(
-                    String.format("Can't set time format '%s'", messages.getMessage(getClass(), "calendar.timeFormat")));
+                    String.format("Can't set time format '%s'", messages.getMessage("calendar.timeFormat")));
         }
 
         UserSessionSource userSessionSource = beanLocator.get(UserSessionSource.NAME);

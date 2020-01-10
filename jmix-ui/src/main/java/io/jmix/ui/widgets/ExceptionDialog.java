@@ -112,7 +112,7 @@ public class ExceptionDialog extends JmixWindow {
             }
         });
 
-        setCaption(caption != null ? caption : messages.getMessage(getClass(), "exceptionDialog.caption"));
+        setCaption(caption != null ? caption : messages.getMessage("exceptionDialog.caption"));
 
         ThemeConstants theme = ui.getApp().getThemeConstants();
         setWidth(theme.get("cuba.web.ExceptionDialog.width"));
@@ -136,7 +136,7 @@ public class ExceptionDialog extends JmixWindow {
         if (showExceptionDetails) {
             textArea.setValue(text);
         } else {
-            textArea.setValue(messages.getMessage(getClass(), "exceptionDialog.contactAdmin"));
+            textArea.setValue(messages.getMessage("exceptionDialog.contactAdmin"));
         }
         textArea.setReadOnly(true);
 
@@ -148,13 +148,13 @@ public class ExceptionDialog extends JmixWindow {
         buttonsLayout.setWidth("100%");
         mainLayout.addComponent(buttonsLayout);
 
-        Button closeButton = new JmixButton(messages.getMessage(getClass(), "exceptionDialog.closeBtn"));
+        Button closeButton = new JmixButton(messages.getMessage("exceptionDialog.closeBtn"));
         closeButton.addClickListener(event ->
                 this.close()
         );
         buttonsLayout.addComponent(closeButton);
 
-        showStackTraceButton = new JmixButton(messages.getMessage(getClass(), "exceptionDialog.showStackTrace"));
+        showStackTraceButton = new JmixButton(messages.getMessage("exceptionDialog.showStackTrace"));
         showStackTraceButton.addClickListener(event ->
                 setStackTraceVisible(!isStackTraceVisible)
         );
@@ -182,7 +182,7 @@ public class ExceptionDialog extends JmixWindow {
 
         if (userSessionSource.getUserSession() != null) {
             if (!StringUtils.isBlank(clientConfig.getSupportEmail())) {
-                Button reportButton = new JmixButton(messages.getMessage(getClass(), "exceptionDialog.reportBtn"));
+                Button reportButton = new JmixButton(messages.getMessage("exceptionDialog.reportBtn"));
                 reportButton.addClickListener(event -> {
                     sendSupportEmail(text, stackTrace);
                     reportButton.setEnabled(false);
@@ -195,7 +195,7 @@ public class ExceptionDialog extends JmixWindow {
             }
         }
 
-        Button logoutButton = new JmixButton(messages.getMessage(getClass(), "exceptionDialog.logout"));
+        Button logoutButton = new JmixButton(messages.getMessage("exceptionDialog.logout"));
         logoutButton.addClickListener(event ->
                 logoutPrompt()
         );
@@ -318,7 +318,7 @@ public class ExceptionDialog extends JmixWindow {
                 copyButton.setVisible(true);
             }
 
-            showStackTraceButton.setCaption(messages.getMessage(getClass(), "exceptionDialog.hideStackTrace"));
+            showStackTraceButton.setCaption(messages.getMessage("exceptionDialog.hideStackTrace"));
 
             mainLayout.addComponent(stackTraceTextArea);
             mainLayout.setExpandRatio(stackTraceTextArea, 1.0f);
@@ -381,8 +381,8 @@ public class ExceptionDialog extends JmixWindow {
         Dialogs dialogs = ((AppUI) getUI()).getDialogs();
 
         dialogs.createOptionDialog(MessageType.WARNING)
-                .withCaption(messages.getMessage(getClass(), "exceptionDialog.logoutCaption"))
-                .withMessage(messages.getMessage(getClass(), "exceptionDialog.logoutMessage"))
+                .withCaption(messages.getMessage("exceptionDialog.logoutCaption"))
+                .withMessage(messages.getMessage("exceptionDialog.logoutMessage"))
                 .withActions(
                         new BaseAction("close")
                                 .withCaption(messages.getMessage("closeApplication"))

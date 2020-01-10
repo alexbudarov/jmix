@@ -236,7 +236,7 @@ public class CreateAction<E extends Entity> extends ListAction implements Action
 
     @Inject
     protected void setMessages(Messages messages) {
-        this.caption = messages.getMessage(getClass(), "actions.Create");
+        this.caption = messages.getMessage("actions.Create");
     }
 
     @Inject

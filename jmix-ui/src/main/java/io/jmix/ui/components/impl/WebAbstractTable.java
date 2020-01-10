@@ -527,7 +527,7 @@ public abstract class WebAbstractTable<T extends com.vaadin.v7.ui.Table & CubaEn
                                 column.getAggregation().getType().toString()));
         }
 
-        component.setAggregationDescription(columnId, messages.getMessage(getClass(), aggregationTypeLabel));
+        component.setAggregationDescription(columnId, messages.getMessage(aggregationTypeLabel));
     }
 
     @Override
@@ -973,12 +973,12 @@ public abstract class WebAbstractTable<T extends com.vaadin.v7.ui.Table & CubaEn
         component.setIconProvider(this::getItemIcon);
         component.setBeforePaintListener(this::beforeComponentPaint);
 
-        component.setSortAscendingLabel(messages.getMessage(getClass(), "tableSort.ascending"));
-        component.setSortResetLabel(messages.getMessage(getClass(), "tableSort.reset"));
-        component.setSortDescendingLabel(messages.getMessage(getClass(), "tableSort.descending"));
+        component.setSortAscendingLabel(messages.getMessage("tableSort.ascending"));
+        component.setSortResetLabel(messages.getMessage("tableSort.reset"));
+        component.setSortDescendingLabel(messages.getMessage("tableSort.descending"));
 
-        component.setSelectAllLabel(messages.getMessage(getClass(), "tableColumnSelector.selectAll"));
-        component.setDeselectAllLabel(messages.getMessage(getClass(), "tableColumnSelector.deselectAll"));
+        component.setSelectAllLabel(messages.getMessage("tableColumnSelector.selectAll"));
+        component.setDeselectAllLabel(messages.getMessage("tableColumnSelector.deselectAll"));
 
         int defaultRowHeaderWidth = 16;
         ThemeConstantsManager themeConstantsManager =

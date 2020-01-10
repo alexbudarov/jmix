@@ -160,7 +160,7 @@ public class ExcludeAction extends SecuredListAction implements Action.DisabledW
 
     @Inject
     protected void setMessages(Messages messages) {
-        this.caption = messages.getMessage(getClass(), "actions.Exclude");
+        this.caption = messages.getMessage("actions.Exclude");
     }
 
     @Inject

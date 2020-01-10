@@ -96,7 +96,7 @@ public class WebRichTextArea extends WebV8AbstractField<CubaRichTextArea, String
         );
 
         for (String locale : locales) {
-            labels.put(locale, messages.getMessage(getClass(), locale));
+            labels.put(locale, messages.getMessage(locale));
         }
 
         return labels;

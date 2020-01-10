@@ -87,7 +87,7 @@ public class WindowBreadCrumbs extends CssLayout {
             Messages messages = beanLocator.get(Messages.NAME);
 
             JmixButton closeBtn = new JmixButton("");
-            closeBtn.setDescription(messages.getMessage(getClass(), "windowBreadCrumbs.closeButton.description"));
+            closeBtn.setDescription(messages.getMessage("windowBreadCrumbs.closeButton.description"));
             closeBtn.setClickHandler(this::onCloseWindowButtonClick);
             closeBtn.setIcon(resolveIcon(beanLocator, CubaIcon.CLOSE));
             closeBtn.setStyleName("c-closetab-button");

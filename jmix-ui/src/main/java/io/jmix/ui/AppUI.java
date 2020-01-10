@@ -278,8 +278,8 @@ public class AppUI extends UI implements ErrorHandler, UiExceptionHandler.UiCont
                 connection.logout();
 
                 Notification.show(
-                        messages.getMessage(getClass(), "app.sessionExpiredCaption"),
-                        messages.getMessage(getClass(), "app.sessionExpiredMessage"),
+                        messages.getMessage("app.sessionExpiredCaption"),
+                        messages.getMessage("app.sessionExpiredMessage"),
                         Notification.Type.HUMANIZED_MESSAGE);
             }
 
@@ -380,8 +380,8 @@ public class AppUI extends UI implements ErrorHandler, UiExceptionHandler.UiCont
     }
 
     protected void showCriticalExceptionMessage(@SuppressWarnings("unused") Exception exception) {
-        String initErrorCaption = messages.getMessage(getClass(), "app.initErrorCaption");
-        String initErrorMessage = messages.getMessage(getClass(), "app.initErrorMessage");
+        String initErrorCaption = messages.getMessage("app.initErrorCaption");
+        String initErrorMessage = messages.getMessage("app.initErrorMessage");
 
         VerticalLayout content = new VerticalLayout();
         content.setMargin(false);
@@ -410,7 +410,7 @@ public class AppUI extends UI implements ErrorHandler, UiExceptionHandler.UiCont
 
         errorPanel.addComponent(messageLabel);
 
-        Button retryButton = new Button(messages.getMessage(getClass(), "app.initRetry"));
+        Button retryButton = new Button(messages.getMessage("app.initRetry"));
         retryButton.setStyleName("c-init-error-retry");
         retryButton.addClickListener(event -> {
             // always restart UI

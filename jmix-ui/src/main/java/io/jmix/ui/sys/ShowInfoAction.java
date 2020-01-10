@@ -38,7 +38,7 @@ public class ShowInfoAction extends BaseAction {
         super(ACTION_ID);
 
         Messages messages = AppBeans.get(Messages.NAME);
-        setCaption(messages.getMessage(getClass(), "table.showInfoAction"));
+        setCaption(messages.getMessage("table.showInfoAction"));
     }
 
     @Override

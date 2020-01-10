@@ -82,7 +82,7 @@ public class LinkCellClickListener implements Table.CellClickListener {
         Messages messages = beanLocator.get(Messages.NAME, Messages.class);
 
         if (entity instanceof SoftDelete && ((SoftDelete) entity).isDeleted()) {
-            wm.showNotification(messages.getMessage("io.jmix.ui.actions.picker", "OpenAction.objectIsDeleted"),
+            wm.showNotification(messages.getMessage("OpenAction.objectIsDeleted"),
                     Frame.NotificationType.HUMANIZED);
             return;
         }

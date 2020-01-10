@@ -164,7 +164,7 @@ public class WebCurrencyField<V extends Number> extends WebV8AbstractField<CubaC
         }
 
         return beanLocator.get(Messages.class)
-                .getMessage(getClass(), "databinding.conversion.error");
+                .getMessage("databinding.conversion.error");
     }
 
     @Override

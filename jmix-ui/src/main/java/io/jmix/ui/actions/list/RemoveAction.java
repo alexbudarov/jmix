@@ -161,7 +161,7 @@ public class RemoveAction extends SecuredListAction implements Action.DisabledWh
 
     @Inject
     protected void setMessages(Messages messages) {
-        this.caption = messages.getMessage(getClass(), "actions.Remove");
+        this.caption = messages.getMessage("actions.Remove");
     }
 
     @Inject

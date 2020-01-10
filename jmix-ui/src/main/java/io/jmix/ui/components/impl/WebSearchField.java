@@ -68,14 +68,14 @@ public class WebSearchField<V extends Entity> extends WebLookupField<V> implemen
 
             @Override
             public void notFoundSuggestions(String filterString) {
-                String message = messages.formatMessage(getClass(), "searchSelect.notFound", filterString);
+                String message = messages.formatMessage("searchSelect.notFound", filterString);
                 App.getInstance().getWindowManager().showNotification(message, defaultNotificationType);
             }
 
             @Override
             public void needMinSearchStringLength(String filterString, int minSearchStringLength) {
                 String message = messages.formatMessage(
-                        getClass(), "searchSelect.minimumLengthOfFilter", minSearchStringLength);
+                        "searchSelect.minimumLengthOfFilter", minSearchStringLength);
                 App.getInstance().getWindowManager().showNotification(message, defaultNotificationType);
             }
         };

@@ -135,7 +135,7 @@ public class LegacyRemoveAction extends ItemTrackingAction
         this.autocommit = autocommit;
 
         Messages messages = AppBeans.get(Messages.NAME);
-        this.caption = messages.getMessage("io.jmix.ui.actions.list", "actions.Remove");
+        this.caption = messages.getMessage("actions.Remove");
 
         this.icon = AppBeans.get(Icons.class).get(CubaIcon.REMOVE_ACTION);
 

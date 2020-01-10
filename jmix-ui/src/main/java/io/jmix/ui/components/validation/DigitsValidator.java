@@ -174,7 +174,7 @@ public class DigitsValidator<T> extends AbstractValidator<T> {
     protected void fireValidationException(T value) {
         String message = getMessage();
         if (message == null) {
-            message = messages.getMessage(getClass(), "validation.constraints.digits");
+            message = messages.getMessage("validation.constraints.digits");
         }
 
         String formattedValue = formatValue(value);
