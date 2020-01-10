@@ -155,7 +155,7 @@ public class LegacyEditAction extends ItemTrackingAction
         this.openType = openType;
 
         Messages messages = AppBeans.get(Messages.NAME);
-        this.caption = messages.getMessage("io.jmix.ui.actions.list/actions.Edit");
+        this.caption = messages.getMessage("io.jmix.ui.actions.list", "actions.Edit");
 
         this.icon = AppBeans.get(Icons.class).get(CubaIcon.EDIT_ACTION);
 
@@ -181,9 +181,9 @@ public class LegacyEditAction extends ItemTrackingAction
         if (!captionInitialized) {
             Messages messages = AppBeans.get(Messages.NAME);
             if (security.isEntityOpPermitted(target.getDatasource().getMetaClass(), EntityOp.UPDATE)) {
-                setCaption(messages.getMessage("io.jmix.ui.actions.list/actions.Edit"));
+                setCaption(messages.getMessage("io.jmix.ui.actions.list", "actions.Edit"));
             } else {
-                setCaption(messages.getMessage("io.jmix.ui.actions.list/actions.View"));
+                setCaption(messages.getMessage("io.jmix.ui.actions.list", "actions.View"));
             }
         }
     }

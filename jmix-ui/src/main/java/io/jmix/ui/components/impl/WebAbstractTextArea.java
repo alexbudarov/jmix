@@ -146,7 +146,7 @@ public abstract class WebAbstractTextArea<T extends com.vaadin.ui.TextArea, V>
         }
 
         return beanLocator.get(Messages.class)
-                .getMessage("databinding.conversion.error");
+                .getMessage(getClass(), "databinding.conversion.error");
     }
 
     @Override

@@ -177,8 +177,8 @@ public class DecimalMaxValidator<T> extends AbstractValidator<T> {
 
     protected String getDefaultMessage() {
         return inclusive ?
-                messages.getMessage("validation.constraints.decimalMaxInclusive") // todo main messages
-                : messages.getMessage("validation.constraints.decimalMax");
+                messages.getMessage(getClass(), "validation.constraints.decimalMaxInclusive")
+                : messages.getMessage(getClass(), "validation.constraints.decimalMax");
     }
 
     protected void fireValidationException(T value) {

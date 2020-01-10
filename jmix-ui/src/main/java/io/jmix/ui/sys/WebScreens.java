@@ -427,7 +427,7 @@ public class WebScreens implements Screens, WindowManager {
                         && workArea.getOpenedTabCount() + 1 > maxTabCount) {
                     ui.getNotifications()
                             .create(NotificationType.WARNING)
-                            .withCaption(messages.formatMessage("tooManyOpenTabs.message", maxTabCount))
+                            .withCaption(messages.formatMessage(getClass(), "tooManyOpenTabs.message", maxTabCount))
                             .show();
 
                     return OperationResult.fail();

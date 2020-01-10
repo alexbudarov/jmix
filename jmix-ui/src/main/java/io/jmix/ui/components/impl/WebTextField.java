@@ -216,7 +216,7 @@ public class WebTextField<V> extends WebV8AbstractField<CubaTextField, String, V
         }
 
         return beanLocator.get(Messages.class)
-                .getMessage("databinding.conversion.error");
+                .getMessage(getClass(), "databinding.conversion.error");
     }
 
     @Override

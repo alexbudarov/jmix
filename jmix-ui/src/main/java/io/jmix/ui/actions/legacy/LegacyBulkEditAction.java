@@ -167,7 +167,7 @@ public class LegacyBulkEditAction extends ItemTrackingAction implements Action.H
 
             Notifications notifications = getScreenContext(target.getFrame()).getNotifications();
             notifications.create(NotificationType.ERROR)
-                    .withCaption(messages.getMessage("io.jmix.ui.exception/accessDenied.message"))
+                    .withCaption(messages.getMessage("io.jmix.ui.exception", "accessDenied.message"))
                     .show();
             return;
         }

@@ -91,24 +91,24 @@ public class PresentationEditor extends CubaWindow {
 
         messages = AppBeans.get(Messages.class);
 
-        nameField = new TextField(messages.getMessage("PresentationsEditor.name"));
+        nameField = new TextField(messages.getMessage(getClass(), "PresentationsEditor.name"));
         nameField.setWidth(theme.get("cuba.web.PresentationEditor.name.width"));
         nameField.setValue(getPresentationCaption());
         root.addComponent(nameField);
 
         autoSaveField = new CheckBox();
-        autoSaveField.setCaption(messages.getMessage("PresentationsEditor.autoSave"));
+        autoSaveField.setCaption(messages.getMessage(getClass(), "PresentationsEditor.autoSave"));
         autoSaveField.setValue(BooleanUtils.isTrue(presentation.getAutoSave()));
         root.addComponent(autoSaveField);
 
         defaultField = new CheckBox();
-        defaultField.setCaption(messages.getMessage("PresentationsEditor.default"));
+        defaultField.setCaption(messages.getMessage(getClass(), "PresentationsEditor.default"));
         defaultField.setValue(presentation.getId().equals(component.getDefaultPresentationId()));
         root.addComponent(defaultField);
 
         if (allowGlobalPresentations) {
             globalField = new CheckBox();
-            globalField.setCaption(messages.getMessage("PresentationsEditor.global"));
+            globalField.setCaption(messages.getMessage(getClass(), "PresentationsEditor.global"));
             globalField.setValue(!isNew && presentation.getUser() == null);
             root.addComponent(globalField);
         }
@@ -120,7 +120,7 @@ public class PresentationEditor extends CubaWindow {
         root.addComponent(buttons);
         root.setComponentAlignment(buttons, Alignment.MIDDLE_LEFT);
 
-        Button commitButton = new CubaButton(messages.getMessage("PresentationsEditor.save"));
+        Button commitButton = new CubaButton(messages.getMessage(getClass(), "PresentationsEditor.save"));
         commitButton.addClickListener(event -> {
             if (validate()) {
                 commit();
@@ -129,7 +129,7 @@ public class PresentationEditor extends CubaWindow {
         });
         buttons.addComponent(commitButton);
 
-        Button closeButton = new CubaButton(messages.getMessage("PresentationsEditor.close"));
+        Button closeButton = new CubaButton(messages.getMessage(getClass(), "PresentationsEditor.close"));
         closeButton.addClickListener(event ->
                 forceClose()
         );
@@ -144,8 +144,8 @@ public class PresentationEditor extends CubaWindow {
         //check that name is empty
         if (StringUtils.isEmpty(nameField.getValue())) {
             App.getInstance().getWindowManager().showNotification(
-                    messages.getMessage("PresentationsEditor.error"),
-                    messages.getMessage("PresentationsEditor.error.nameRequired"),
+                    messages.getMessage(getClass(), "PresentationsEditor.error"),
+                    messages.getMessage(getClass(), "PresentationsEditor.error.nameRequired"),
                     Frame.NotificationType.HUMANIZED);
             return false;
         }
@@ -154,8 +154,8 @@ public class PresentationEditor extends CubaWindow {
         final Presentation pres = presentations.getPresentationByName(nameField.getValue());
         if (pres != null && !pres.equals(presentation)) {
             App.getInstance().getWindowManager().showNotification(
-                    messages.getMessage("PresentationsEditor.error"),
-                    messages.getMessage("PresentationsEditor.error.nameAlreadyExists"),
+                    messages.getMessage(getClass(), "PresentationsEditor.error"),
+                    messages.getMessage(getClass(), "PresentationsEditor.error.nameAlreadyExists"),
                     Frame.NotificationType.HUMANIZED);
             return false;
         }

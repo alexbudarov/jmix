@@ -103,7 +103,7 @@ public class DefaultExceptionHandler implements ExceptionHandler {
                 (rootCause.getMessage() != null ? "\n" + rootCause.getMessage() : "");
 
         ui.getNotifications().create(Notifications.NotificationType.ERROR)
-                .withCaption(messages.getMessage("exceptionDialog.caption", app.getLocale()))
+                .withCaption(messages.getMessage("io.jmix.ui.widgets", "exceptionDialog.caption", app.getLocale()))
                 .withDescription(message)
                 .show();
     }

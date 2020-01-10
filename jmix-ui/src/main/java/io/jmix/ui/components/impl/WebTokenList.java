@@ -137,7 +137,7 @@ public class WebTokenList<V extends Entity>
 
     protected void createComponents() {
         addButton = uiComponents.create(Button.class);
-        addButton.setCaption(messages.getMessage("io.jmix.ui.actions.list/actions.Add"));
+        addButton.setCaption(messages.getMessage("io.jmix.ui.actions.list", "actions.Add"));
 
         clearButton = uiComponents.create(Button.class);
         clearButton.setCaption(messages.getMessage("actions.Clear"));

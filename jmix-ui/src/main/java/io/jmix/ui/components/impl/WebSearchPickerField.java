@@ -181,7 +181,7 @@ public class WebSearchPickerField<V extends Entity> extends WebPickerField<V>
             public void notFoundSuggestions(String filterString) {
                 Messages messages = beanLocator.get(Messages.NAME);
 
-                String message = messages.formatMessage("io.jmix.ui", "searchSelect.notFound", filterString);
+                String message = messages.formatMessage(getClass(), "searchSelect.notFound", filterString);
                 App.getInstance().getWindowManager().showNotification(message, defaultNotificationType);
             }
 
@@ -190,7 +190,7 @@ public class WebSearchPickerField<V extends Entity> extends WebPickerField<V>
                 Messages messages = beanLocator.get(Messages.NAME);
 
                 String message = messages.formatMessage(
-                        "io.jmix.ui", "searchSelect.minimumLengthOfFilter", minSearchStringLength);
+                        getClass(), "searchSelect.minimumLengthOfFilter", minSearchStringLength);
                 App.getInstance().getWindowManager().showNotification(message, defaultNotificationType);
             }
         };
