@@ -14,11 +14,16 @@
  * limitations under the License.
  */
 
-package io.jmix.ui.components.compatibility;
+package com.haulmont.cuba.gui.components.compatibility;
 
+import com.haulmont.cuba.gui.WindowManager;
+import com.haulmont.cuba.gui.components.AbstractFrame;
+import com.haulmont.cuba.gui.components.AbstractWindow;
+import com.haulmont.cuba.gui.data.DsContext;
 import io.jmix.core.AppBeans;
 import io.jmix.core.Messages;
 import io.jmix.ui.components.Component;
+import io.jmix.ui.components.compatibility.CubaFragmentAdapter;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -30,21 +35,18 @@ import java.util.stream.Stream;
  * Enables us to show screens based on {@code AbstractWindow} as a <b>frame</b>.
  */
 @Deprecated
-public class LegacyFragmentAdapter /*extends AbstractFrame */{
+public class LegacyFragmentAdapter extends AbstractFrame implements CubaFragmentAdapter {
 
-    /*
-    TODO: legacy-ui
     private AbstractWindow screen;
 
-    @SuppressWarnings("ReassignmentInjectVariable")
     public LegacyFragmentAdapter(AbstractWindow legacyScreen) {
         this.screen = legacyScreen;
         this.messages = AppBeans.get(Messages.NAME);
     }
 
-    *//**
+    /**
      * @return wrapper screen
-     *//*
+     */
     public AbstractWindow getRealScreen() {
         return screen;
     }
@@ -58,7 +60,7 @@ public class LegacyFragmentAdapter /*extends AbstractFrame */{
 
     @Override
     public WindowManager getWindowManager() {
-        return getFrame().getWindowManager();
+        return ((AbstractFrame) getFrame()).getWindowManager();
     }
 
     @Override
@@ -118,5 +120,5 @@ public class LegacyFragmentAdapter /*extends AbstractFrame */{
     @Override
     public Component getComponentNN(String id) {
         return screen.getComponentNN(id);
-    }*/
+    }
 }

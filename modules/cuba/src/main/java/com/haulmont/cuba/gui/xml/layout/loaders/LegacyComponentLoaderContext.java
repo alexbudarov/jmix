@@ -14,32 +14,25 @@
  * limitations under the License.
  */
 
-package io.jmix.ui.components.compatibility;
+package com.haulmont.cuba.gui.xml.layout.loaders;
 
-import io.jmix.ui.screen.ScreenFragment;
+import com.haulmont.cuba.gui.data.DsContext;
+import io.jmix.ui.screen.ScreenOptions;
+import io.jmix.ui.xml.layout.loaders.ComponentLoaderContext;
 
-/**
- * Wrapper object for compatibility with legacy code.
- */
-@Deprecated
-public class ScreenFragmentWrapper /*extends AbstractFrame */{
+public class LegacyComponentLoaderContext extends ComponentLoaderContext {
 
-    private ScreenFragment screen;
+    protected DsContext dsContext;
 
-    public ScreenFragmentWrapper(ScreenFragment screen) {
-        this.screen = screen;
+    public LegacyComponentLoaderContext(ScreenOptions options) {
+        super(options);
     }
 
-    /*
-    TODO: legacy-ui
-    @Override
-    public Frame getWrappedFrame() {
-        return screen.getFragment();
+    public DsContext getDsContext() {
+        return dsContext;
     }
 
-    @Nullable
-    @Override
-    public Component getComponent(String id) {
-        return screen.getFragment().getComponent(id);
-    }*/
+    public void setDsContext(DsContext dsContext) {
+        this.dsContext = dsContext;
+    }
 }

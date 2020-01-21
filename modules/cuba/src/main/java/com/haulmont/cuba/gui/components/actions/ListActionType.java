@@ -15,6 +15,7 @@
  */
 package com.haulmont.cuba.gui.components.actions;
 
+import com.haulmont.cuba.gui.components.LegacyListComponent;
 import io.jmix.ui.Actions;
 import io.jmix.ui.actions.Action;
 import io.jmix.ui.components.ListComponent;
@@ -29,42 +30,42 @@ public enum ListActionType {
 
     CREATE("create") {
         @Override
-        public Action createAction(ListComponent holder) {
+        public Action createAction(LegacyListComponent holder) {
             return LegacyCreateAction.create(holder);
         }
     },
 
     EDIT("edit") {
         @Override
-        public Action createAction(ListComponent holder) {
+        public Action createAction(LegacyListComponent holder) {
             return LegacyEditAction.create(holder);
         }
     },
 
     REMOVE("remove") {
         @Override
-        public Action createAction(ListComponent holder) {
+        public Action createAction(LegacyListComponent holder) {
             return LegacyRemoveAction.create(holder);
         }
     },
 
     REFRESH("refresh") {
         @Override
-        public Action createAction(ListComponent holder) {
+        public Action createAction(LegacyListComponent holder) {
             return LegacyRefreshAction.create(holder);
         }
     },
 
     ADD("add") {
         @Override
-        public Action createAction(ListComponent holder) {
+        public Action createAction(LegacyListComponent holder) {
             return LegacyAddAction.create(holder);
         }
     },
 
     EXCLUDE("exclude") {
         @Override
-        public Action createAction(ListComponent holder) {
+        public Action createAction(LegacyListComponent holder) {
             return LegacyExcludeAction.create(holder);
         }
     };
@@ -90,5 +91,5 @@ public enum ListActionType {
         return id;
     }
 
-    public abstract Action createAction(ListComponent holder);
+    public abstract Action createAction(LegacyListComponent holder);
 }

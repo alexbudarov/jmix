@@ -17,6 +17,7 @@
 package com.haulmont.cuba.web.gui.components;
 
 import com.haulmont.cuba.gui.components.BulkEditor;
+import com.haulmont.cuba.gui.components.LegacyListComponent;
 import com.haulmont.cuba.gui.components.actions.LegacyBulkEditAction;
 import io.jmix.core.security.ConstraintOperationType;
 import io.jmix.ui.components.Field;
@@ -34,7 +35,7 @@ public class WebBulkEditor extends WebButton implements BulkEditor {
     protected List<String> includeProperties = Collections.emptyList();
     protected OpenType openType = OpenType.DIALOG;
     protected LegacyBulkEditAction bulkEditAction;
-    protected ListComponent listComponent;
+    protected LegacyListComponent listComponent;
     protected Map<String, Field.Validator> fieldValidators;
     protected List<Field.Validator> modelValidators;
     protected ConstraintOperationType constraintOperationType;
@@ -82,12 +83,12 @@ public class WebBulkEditor extends WebButton implements BulkEditor {
     }
 
     @Override
-    public ListComponent getListComponent() {
+    public LegacyListComponent getListComponent() {
         return listComponent;
     }
 
     @Override
-    public void setListComponent(ListComponent listComponent) {
+    public void setListComponent(LegacyListComponent listComponent) {
         this.listComponent = listComponent;
 
         if (listComponent != null) {

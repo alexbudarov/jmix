@@ -15,8 +15,12 @@
  */
 package com.haulmont.cuba.gui.components.actions;
 
-import io.jmix.core.ConfigInterfaces;
+import com.haulmont.cuba.gui.components.LegacyListComponent;
+import com.haulmont.cuba.gui.data.CollectionDatasource;
+import com.haulmont.cuba.gui.data.Datasource;
+import com.haulmont.cuba.gui.data.PropertyDatasource;
 import io.jmix.core.AppBeans;
+import io.jmix.core.ConfigInterfaces;
 import io.jmix.core.Messages;
 import io.jmix.core.entity.Entity;
 import io.jmix.core.metamodel.model.MetaClass;
@@ -33,9 +37,6 @@ import io.jmix.ui.components.ComponentsHelper;
 import io.jmix.ui.components.ListComponent;
 import io.jmix.ui.icons.CubaIcon;
 import io.jmix.ui.icons.Icons;
-import com.haulmont.cuba.gui.data.CollectionDatasource;
-import com.haulmont.cuba.gui.data.Datasource;
-import com.haulmont.cuba.gui.data.PropertyDatasource;
 import org.springframework.context.annotation.Scope;
 
 import java.util.HashSet;
@@ -56,7 +57,7 @@ import java.util.Set;
  */
 @org.springframework.stereotype.Component("cuba_RemoveAction")
 @Scope("prototype")
-public class LegacyRemoveAction extends ItemTrackingAction
+public class LegacyRemoveAction extends LegacyItemTrackingAction
         implements Action.HasBeforeActionPerformedHandler, Action.DisabledWhenScreenReadOnly {
 
     public static final String ACTION_ID = ListActionType.REMOVE.getId();
@@ -109,7 +110,7 @@ public class LegacyRemoveAction extends ItemTrackingAction
      * The simplest constructor. The action has default name and autocommit=true.
      * @param target    component containing this action
      */
-    public LegacyRemoveAction(ListComponent target) {
+    public LegacyRemoveAction(LegacyListComponent target) {
         this(target, true, ACTION_ID);
     }
 
@@ -118,7 +119,7 @@ public class LegacyRemoveAction extends ItemTrackingAction
      * @param target        component containing this action
      * @param autocommit    whether to commit datasource immediately
      */
-    public LegacyRemoveAction(ListComponent target, boolean autocommit) {
+    public LegacyRemoveAction(LegacyListComponent target, boolean autocommit) {
         this(target, autocommit, ACTION_ID);
     }
 
@@ -128,7 +129,7 @@ public class LegacyRemoveAction extends ItemTrackingAction
      * @param autocommit    whether to commit datasource immediately
      * @param id            action's identifier
      */
-    public LegacyRemoveAction(ListComponent target, boolean autocommit, String id) {
+    public LegacyRemoveAction(LegacyListComponent target, boolean autocommit, String id) {
         super(id);
 
         this.target = target;
@@ -149,7 +150,7 @@ public class LegacyRemoveAction extends ItemTrackingAction
      */
     @Override
     protected boolean isPermitted() {
-        if (target == null/* || target.getDatasource() == null TODO: legacy-ui*/) {
+        if (target == null || target.getDatasource() == null) {
             return false;
         }
 
@@ -161,7 +162,7 @@ public class LegacyRemoveAction extends ItemTrackingAction
     }
 
     protected boolean checkRemovePermission() {
-        CollectionDatasource ds = null/*target.getDatasource() TODO: legacy-ui*/;
+        CollectionDatasource ds = target.getDatasource();
         if (ds instanceof PropertyDatasource) {
             PropertyDatasource propertyDatasource = (PropertyDatasource) ds;
 
@@ -232,8 +233,7 @@ public class LegacyRemoveAction extends ItemTrackingAction
                                 }
 
                                 Set<Entity> filtered = new HashSet<>(selected);
-                                // TODO: legacy-ui
-                                // filtered.retainAll(target.getDatasource().getItems());
+                                filtered.retainAll(target.getDatasource().getItems());
                                 //noinspection unchecked
                                 target.setSelected(filtered);
                             }

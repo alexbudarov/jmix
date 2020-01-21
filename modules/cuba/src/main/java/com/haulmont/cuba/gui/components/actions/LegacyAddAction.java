@@ -15,8 +15,17 @@
  */
 package com.haulmont.cuba.gui.components.actions;
 
-import io.jmix.ui.components.Window;
-import io.jmix.core.*;
+import com.haulmont.cuba.gui.WindowManager;
+import com.haulmont.cuba.gui.components.LegacyListComponent;
+import com.haulmont.cuba.gui.data.CollectionDatasource;
+import com.haulmont.cuba.gui.data.Datasource;
+import com.haulmont.cuba.gui.data.NestedDatasource;
+import com.haulmont.cuba.gui.data.PropertyDatasource;
+import io.jmix.core.AppBeans;
+import io.jmix.core.ConfigInterfaces;
+import io.jmix.core.ExtendedEntities;
+import io.jmix.core.Messages;
+import io.jmix.core.Metadata;
 import io.jmix.core.entity.Entity;
 import io.jmix.core.metamodel.model.MetaClass;
 import io.jmix.core.metamodel.model.MetaProperty;
@@ -26,18 +35,13 @@ import io.jmix.ui.ClientConfig;
 import io.jmix.ui.WindowConfig;
 import io.jmix.ui.WindowInfo;
 import io.jmix.ui.actions.Action;
-import io.jmix.ui.actions.ListAction;
 import io.jmix.ui.components.Component;
 import io.jmix.ui.components.ComponentsHelper;
 import io.jmix.ui.components.ListComponent;
-import com.haulmont.cuba.gui.WindowManager;
+import io.jmix.ui.components.Window;
 import io.jmix.ui.gui.OpenType;
 import io.jmix.ui.icons.CubaIcon;
 import io.jmix.ui.icons.Icons;
-import com.haulmont.cuba.gui.data.CollectionDatasource;
-import com.haulmont.cuba.gui.data.Datasource;
-import com.haulmont.cuba.gui.data.NestedDatasource;
-import com.haulmont.cuba.gui.data.PropertyDatasource;
 import org.springframework.context.annotation.Scope;
 
 import javax.annotation.Nullable;
@@ -61,7 +65,7 @@ import java.util.function.Supplier;
  */
 @org.springframework.stereotype.Component("cuba_AddAction")
 @Scope("prototype")
-public class LegacyAddAction extends ListAction
+public class LegacyAddAction extends LegacyListAction
         implements Action.HasOpenType, Action.HasBeforeActionPerformedHandler, Action.DisabledWhenScreenReadOnly {
 
     public static final String ACTION_ID = ListActionType.ADD.getId();
@@ -126,7 +130,7 @@ public class LegacyAddAction extends ListAction
      *
      * @param target    component containing this action
      */
-    public LegacyAddAction(ListComponent target) {
+    public LegacyAddAction(LegacyListComponent target) {
         this(target, null, OpenType.THIS_TAB, ACTION_ID);
     }
 
@@ -135,7 +139,7 @@ public class LegacyAddAction extends ListAction
      * @param target    component containing this action
      * @param handler   lookup handler. If null, an instance of {@link DefaultHandler} will be used.
      */
-    public LegacyAddAction(ListComponent target, @Nullable Window.Lookup.Handler handler) {
+    public LegacyAddAction(LegacyListComponent target, @Nullable Window.Lookup.Handler handler) {
         this(target, handler, OpenType.THIS_TAB, ACTION_ID);
     }
 
@@ -145,7 +149,7 @@ public class LegacyAddAction extends ListAction
      * @param handler   lookup handler. If null, an instance of {@link DefaultHandler} will be used.
      * @param openType  how to open the editor screen
      */
-    public LegacyAddAction(ListComponent target, @Nullable Window.Lookup.Handler handler, OpenType openType) {
+    public LegacyAddAction(LegacyListComponent target, @Nullable Window.Lookup.Handler handler, OpenType openType) {
         this(target, handler, openType, ACTION_ID);
     }
 
@@ -156,7 +160,7 @@ public class LegacyAddAction extends ListAction
      * @param openType  how to open the editor screen
      * @param id        action's name
      */
-    public LegacyAddAction(ListComponent target, @Nullable Window.Lookup.Handler handler,
+    public LegacyAddAction(LegacyListComponent target, @Nullable Window.Lookup.Handler handler,
                            OpenType openType, String id) {
         super(id, null);
 
@@ -176,8 +180,6 @@ public class LegacyAddAction extends ListAction
 
     @Override
     protected boolean isPermitted() {
-        /*
-        TODO: legacy-ui
         if (target == null || target.getDatasource() == null) {
             return false;
         }
@@ -193,7 +195,7 @@ public class LegacyAddAction extends ListAction
             if (!attrPermitted) {
                 return false;
             }
-        }*/
+        }
 
         return super.isPermitted();
     }
@@ -291,13 +293,10 @@ public class LegacyAddAction extends ListAction
         if (windowId != null) {
             return windowId;
         } else {
-            return null;
-            /*
-            TODO: legacy-ui
             WindowConfig windowConfig = AppBeans.get(WindowConfig.NAME);
             MetaClass metaClass = target.getDatasource().getMetaClass();
 
-            return windowConfig.getAvailableLookupScreenId(metaClass);*/
+            return windowConfig.getAvailableLookupScreenId(metaClass);
         }
     }
 
@@ -365,7 +364,7 @@ public class LegacyAddAction extends ListAction
                 return;
             }
 
-            final CollectionDatasource ds = null /*target.getDatasource() TODO: legacy-ui*/;
+            final CollectionDatasource ds = target.getDatasource();
             if (ds == null) {
                 return;
             }

@@ -17,14 +17,17 @@
 package com.haulmont.cuba.gui.xml.layout.loaders;
 
 import com.google.common.base.Splitter;
-import com.haulmont.cuba.gui.WindowManager;
 import com.haulmont.cuba.gui.components.BulkEditor;
+import com.haulmont.cuba.gui.components.LegacyListComponent;
 import com.haulmont.cuba.gui.screen.compatibility.LegacyFrame;
 import io.jmix.core.AppBeans;
 import io.jmix.core.security.Security;
 import io.jmix.core.security.UserSessionSource;
 import io.jmix.ui.GuiDevelopmentException;
-import io.jmix.ui.components.*;
+import io.jmix.ui.components.Component;
+import io.jmix.ui.components.ComponentsHelper;
+import io.jmix.ui.components.Field;
+import io.jmix.ui.components.Window;
 import io.jmix.ui.gui.OpenType;
 import io.jmix.ui.xml.layout.loaders.AbstractComponentLoader;
 import org.apache.commons.lang3.StringUtils;
@@ -158,12 +161,12 @@ public class BulkEditorLoader extends AbstractComponentLoader<BulkEditor> {
         getComponentContext().addPostInitTask((c, w) -> {
             if (resultComponent.getListComponent() == null) {
                 Component bindComponent = resultComponent.getFrame().getComponent(listComponent);
-                if (!(bindComponent instanceof ListComponent)) {
+                if (!(bindComponent instanceof LegacyListComponent)) {
                     throw new GuiDevelopmentException("Specify 'for' attribute: id of table or tree",
                             context, "componentId", resultComponent.getId());
                 }
 
-                resultComponent.setListComponent((ListComponent) bindComponent);
+                resultComponent.setListComponent((LegacyListComponent) bindComponent);
             }
         });
 

@@ -16,19 +16,19 @@
 package com.haulmont.cuba.gui.xml.layout.loaders;
 
 import com.haulmont.cuba.gui.components.DatasourceComponent;
-import io.jmix.ui.xml.layout.loaders.AbstractComponentLoader;
+import com.haulmont.cuba.gui.data.Datasource;
+import io.jmix.ui.GuiDevelopmentException;
 import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Element;
 
-public abstract class AbstractDatasourceComponentLoader<T extends DatasourceComponent> extends AbstractComponentLoader<T> {
+public abstract class AbstractDatasourceComponentLoader<T extends DatasourceComponent>
+        extends LegacyComponentLoader<T> {
 
     protected void loadDatasource(DatasourceComponent component, Element element) {
         String datasource = element.attributeValue("datasource");
         if (!StringUtils.isEmpty(datasource)) {
-            ComponentContext componentContext = getComponentContext();
+            LegacyComponentLoaderContext componentContext = getComponentContext();
 
-            /*
-            TODO: legacy-ui
             if (componentContext.getDsContext() == null) {
                 throw new IllegalStateException("'datasource' attribute can be used only in screens with 'dsContext' element. " +
                         "In a screen with 'data' element use 'dataContainer' attribute.");
@@ -45,7 +45,7 @@ public abstract class AbstractDatasourceComponentLoader<T extends DatasourceComp
                                 "attribute is not defined", datasource, component.getId()), context);
             }
 
-            component.setDatasource(ds, property);*/
+            component.setDatasource(ds, property);
         }
     }
 }

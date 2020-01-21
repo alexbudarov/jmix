@@ -16,6 +16,7 @@
 package com.haulmont.cuba.gui.components.actions;
 
 import com.haulmont.cuba.gui.components.BulkEditor;
+import com.haulmont.cuba.gui.components.LegacyListComponent;
 import io.jmix.core.ConfigInterfaces;
 import io.jmix.core.AppBeans;
 import io.jmix.core.Messages;
@@ -28,6 +29,7 @@ import io.jmix.core.security.Security;
 import io.jmix.ui.ClientConfig;
 import io.jmix.ui.WindowConfig;
 import io.jmix.ui.actions.Action;
+import io.jmix.ui.actions.ItemTrackingAction;
 import io.jmix.ui.components.*;
 import com.haulmont.cuba.gui.screen.compatibility.LegacyFrame;
 import io.jmix.ui.gui.OpenType;
@@ -58,7 +60,7 @@ import java.util.function.Supplier;
  */
 @org.springframework.stereotype.Component("cuba_EditAction")
 @Scope("prototype")
-public class LegacyEditAction extends ItemTrackingAction
+public class LegacyEditAction extends LegacyItemTrackingAction
         implements Action.HasOpenType, Action.HasBeforeActionPerformedHandler, Action.DisabledWhenScreenReadOnly {
 
     public static final String ACTION_ID = ListActionType.EDIT.getId();
@@ -101,7 +103,7 @@ public class LegacyEditAction extends ItemTrackingAction
      * Creates an action with default id, opening the edit screen in THIS tab.
      * @param target    component containing this action
      */
-    public static LegacyEditAction create(ListComponent target) {
+    public static LegacyEditAction create(LegacyListComponent target) {
         return AppBeans.getPrototype("cuba_EditAction", target);
     }
 
@@ -110,7 +112,7 @@ public class LegacyEditAction extends ItemTrackingAction
      * @param target    component containing this action
      * @param openType  how to open the editor screen
      */
-    public static LegacyEditAction create(ListComponent target, OpenType openType) {
+    public static LegacyEditAction create(LegacyListComponent target, OpenType openType) {
         return AppBeans.getPrototype("cuba_EditAction", target, openType);
     }
 
@@ -120,7 +122,7 @@ public class LegacyEditAction extends ItemTrackingAction
      * @param openType  how to open the editor screen
      * @param id        action name
      */
-    public static LegacyEditAction create(ListComponent target, OpenType openType, String id) {
+    public static LegacyEditAction create(LegacyListComponent target, OpenType openType, String id) {
         return AppBeans.getPrototype("cuba_EditAction", target, openType, id);
     }
 
@@ -128,7 +130,7 @@ public class LegacyEditAction extends ItemTrackingAction
      * The simplest constructor. The action has default name and opens the editor screen in THIS tab.
      * @param target    component containing this action
      */
-    public LegacyEditAction(ListComponent target) {
+    public LegacyEditAction(LegacyListComponent target) {
         this(target, OpenType.THIS_TAB, ACTION_ID);
     }
 
@@ -137,7 +139,7 @@ public class LegacyEditAction extends ItemTrackingAction
      * @param target    component containing this action
      * @param openType  how to open the editor screen
      */
-    public LegacyEditAction(ListComponent target, OpenType openType) {
+    public LegacyEditAction(LegacyListComponent target, OpenType openType) {
         this(target, openType, ACTION_ID);
     }
 
@@ -147,7 +149,7 @@ public class LegacyEditAction extends ItemTrackingAction
      * @param openType  how to open the editor screen
      * @param id        action name
      */
-    public LegacyEditAction(ListComponent target, OpenType openType, String id) {
+    public LegacyEditAction(LegacyListComponent target, OpenType openType, String id) {
         super(id);
 
         this.target = target;
@@ -174,18 +176,16 @@ public class LegacyEditAction extends ItemTrackingAction
     public void refreshState() {
         super.refreshState();
 
-        if (target == null/* || target.getDatasource() == null TODO: legacy-ui*/)
+        if (target == null || target.getDatasource() == null)
             return;
 
         if (!captionInitialized) {
             Messages messages = AppBeans.get(Messages.NAME);
-            /*
-            TODO: legacy-ui
             if (security.isEntityOpPermitted(target.getDatasource().getMetaClass(), EntityOp.UPDATE)) {
                 setCaption(messages.getMessage("actions.Edit"));
             } else {
                 setCaption(messages.getMessage("actions.View"));
-            }*/
+            }
         }
     }
 
@@ -194,11 +194,11 @@ public class LegacyEditAction extends ItemTrackingAction
      */
     @Override
     protected boolean isPermitted() {
-        if (target == null/* || target.getDatasource() == null TODO: legacy-ui*/) {
+        if (target == null || target.getDatasource() == null) {
             return false;
         }
 
-        CollectionDatasource ownerDatasource = null/*target.getDatasource().getMetaClass() TODO: legacy-ui*/;
+        CollectionDatasource ownerDatasource = target.getDatasource();
         boolean entityOpPermitted = security.isEntityOpPermitted(ownerDatasource.getMetaClass(), EntityOp.READ);
         if (!entityOpPermitted) {
             return false;
@@ -222,7 +222,7 @@ public class LegacyEditAction extends ItemTrackingAction
         final Set selected = target.getSelected();
         if (selected.size() == 1) {
             Datasource parentDs = null;
-            final CollectionDatasource datasource = null/*target.getDatasource().getMetaClass() TODO: legacy-ui*/;
+            final CollectionDatasource datasource = target.getDatasource();
             if (datasource instanceof PropertyDatasource) {
                 MetaProperty metaProperty = ((PropertyDatasource) datasource).getProperty();
                 if (metaProperty.getType().equals(MetaProperty.Type.COMPOSITION)) {
@@ -240,8 +240,7 @@ public class LegacyEditAction extends ItemTrackingAction
                 // if bulk editor integration enabled and permitted for user
 
                 Map<String, Object> params = ParamsMap.of(
-                        // TODO: legacy-ui
-                        // "metaClass", target.getDatasource().getMetaClass(),
+                        "metaClass", target.getDatasource().getMetaClass(),
                         "selected", selected,
                         "exclude", bulkEditorIntegration.getExcludePropertiesRegex(),
                         "fieldValidators", bulkEditorIntegration.getFieldValidators(),
@@ -253,8 +252,7 @@ public class LegacyEditAction extends ItemTrackingAction
                 Window bulkEditor = frameOwner.openWindow("bulkEditor", bulkEditorIntegration.getOpenType(), params);
                 bulkEditor.addCloseListener(actionId -> {
                     if (Window.COMMIT_ACTION_ID.equals(actionId)) {
-                        // TODO: legacy-ui
-                        // target.getDatasource().refresh();
+                        target.getDatasource().refresh();
                     }
                     if (target instanceof Component.Focusable){
                         ((Component.Focusable) target).focus();
@@ -346,7 +344,7 @@ public class LegacyEditAction extends ItemTrackingAction
         if (windowId != null) {
             return windowId;
         } else {
-            MetaClass metaClass = null/*target.getDatasource().getMetaClass() TODO: legacy-ui*/;
+            MetaClass metaClass = target.getDatasource().getMetaClass();
             WindowConfig windowConfig = AppBeans.get(WindowConfig.NAME);
             return windowConfig.getEditorScreenId(metaClass);
         }

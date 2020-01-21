@@ -28,8 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * TODO: legacy-ui
- * Use {@code io.jmix.ui.actions.list.BulkEditAction} in new screens instead.
+ * Use {@code BulkEditAction} in new screens instead.
  *
  * see io.jmix.ui.BulkEditors
  */
@@ -57,8 +56,8 @@ public interface BulkEditor extends Component, Component.HasCaption, Component.B
      */
     void setIncludeProperties(List<String> includeProperties);
 
-    ListComponent getListComponent();
-    void setListComponent(ListComponent listComponent);
+    LegacyListComponent getListComponent();
+    void setListComponent(LegacyListComponent listComponent);
 
     Map<String, Field.Validator> getFieldValidators();
     void setFieldValidators(Map<String, Field.Validator> fieldValidators);
